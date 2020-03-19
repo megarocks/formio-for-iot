@@ -1,0 +1,40 @@
+{
+    "id": "switch",
+    "version": 1,
+    "name": "Switch",
+    "tags": ["generic"],
+    "attributes": {
+        "switch": {
+            "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "value": {
+                        "title": "SwitchState",
+                        "type": "string",
+                        "enum": [
+                            "on",
+                            "off"
+                        ],
+                        "default": "off"
+                    }
+                },
+                "required": [
+                    "value"
+                ]
+            }
+        }
+    },
+    "commands": {
+        "off": {
+            "arguments": [
+
+            ]
+        },
+        "on": {
+            "arguments": [
+
+            ]
+        }
+    }
+}

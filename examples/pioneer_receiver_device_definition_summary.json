@@ -1,0 +1,11 @@
+{
+    "id": "pioneer_0001",
+    "name": "pioneer receiver",
+    "type": ["Receiver","Media Player"],
+    "friendlyName": "Pioneer Onkyo Receivers Post 2016",
+    "components":["main", "zone2"],
+    "supportedCapabilities": {
+        "main": ["switch","audioMute","audioVolume","audioVolumedB","mediaInputSource", "surroundMode"],
+        "zone2": ["switch","audioMute","audioVolume","mediaInputSource"]
+    }
+}

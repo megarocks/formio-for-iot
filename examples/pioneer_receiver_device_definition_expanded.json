@@ -1,0 +1,584 @@
+{
+    "id": "pioneer_0001",
+    "name": "pioneer receiver",
+    "type": [
+      "Receiver",
+      "Media Player"
+    ],
+    "friendlyName": "Pioneer Onkyo Receivers Post 2016",
+    "components": [
+      "main",
+      "zone2"
+    ],
+    "supportedCapabilities": {
+      "main": [
+        "switch",
+        "audioMute",
+        "audioVolume",
+        "audioVolumedB",
+        "mediaInputSource",
+        "surroundMode"
+      ],
+      "zone2": [
+        "switch",
+        "audioMute",
+        "audioVolume",
+        "mediaInputSource"
+      ]
+    },
+    "main": {
+      "switch": {
+        "id": "switch",
+        "version": 1,
+        "name": "Switch",
+        "attributes": {
+          "switch": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "SwitchState",
+                  "type": "string",
+                  "enum": [
+                    "on",
+                    "off"
+                  ],
+                  "default": "off"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "off": {
+            "arguments": []
+          },
+          "on": {
+            "arguments": []
+          }
+        }
+      },
+      "audioMute": {
+        "id": "audioMute",
+        "version": 1,
+        "name": "Audio Mute",
+        "status": "live",
+        "attributes": {
+          "mute": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "MuteState",
+                  "type": "string",
+                  "enum": [
+                    "muted",
+                    "unmuted"
+                  ],
+                  "default": "unmuted"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "setMute": {
+            "arguments": [
+              {
+                "name": "state",
+                "schema": {
+                  "title": "MuteState",
+                  "type": "string",
+                  "enum": [
+                    "muted",
+                    "unmuted"
+                  ]
+                },
+                "required": true
+              }
+            ]
+          },
+          "mute": {
+            "arguments": []
+          },
+          "unmute": {
+            "arguments": []
+          }
+        }
+      },
+      "audioVolume": {
+        "id": "audioVolume",
+        "version": 1,
+        "name": "Audio Volume",
+        "attributes": {
+          "volume": {
+            "schema": {
+              "title": "IntegerPercent",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "default": 0
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "%"
+                  ],
+                  "default": "%"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "setVolume": {
+            "arguments": [
+              {
+                "name": "volume",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "required": true
+              }
+            ]
+          },
+          "getVolume": {
+            "arguments": []
+          },
+          "volumeUp": {
+            "arguments": []
+          },
+          "volumeDown": {
+            "arguments": []
+          }
+        }
+      },
+      "audioVolumedB": {
+        "id": "audioVolumedB",
+        "version": 1,
+        "name": "Audio Volume dB",
+        "attributes": {
+          "volumedB": {
+            "schema": {
+              "title": "IntegerPercent",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "default": 0
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "%"
+                  ],
+                  "default": "%"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "setVolumedB": {
+            "arguments": [
+              {
+                "name": "volume",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "required": true
+              }
+            ]
+          },
+          "getVolumedB": {
+            "arguments": []
+          }
+        }
+      },
+      "mediaInputSource": {
+        "id": "mediaInputSource",
+        "version": 1,
+        "name": "Media Input Source",
+        "attributes": {
+          "inputSource": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "MediaSource",
+                  "type": "string",
+                  "list": "inputs",
+                  "default": "CD"
+                },
+                "supported": {
+                  "supportedInputSources": {
+                    "title": "MediaSource",
+                    "type": "string",
+                    "list": "inputs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "commands": {
+          "setInputSource": {
+            "arguments": [
+              {
+                "name": "mode",
+                "schema": {
+                  "title": "MediaSource",
+                  "type": "string",
+                  "list": "inputs"
+                },
+                "required": true
+              }
+            ]
+          },
+          "getInputSource": {
+            "arguments": []
+          }
+        },
+        "lists": {
+          "inputs": [
+            "CBL/SAT",
+            "GAME",
+            "AUX",
+            "BD/DVD",
+            "STRM BOX",
+            "TV",
+            "PHONO",
+            "CD",
+            "FM",
+            "AM",
+            "TUNER",
+            "USB(Front)",
+            "NET",
+            "USB(toggle)",
+            "BT AUDIO",
+            "HDMI 5",
+            "HDMI 6",
+            "HDMI 7"
+          ]
+        }
+      },
+      "surroundMode": {
+        "id": "surroundMode",
+        "version": 1,
+        "name": "Surround Mode",
+        "attributes": {
+          "surroundMode": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "SurroundMode",
+                  "type": "string",
+                  "list": "modes",
+                  "default": "DIRECT"
+                },
+                "supported": {
+                  "supportedSurroundModes": {
+                    "title": "Supported Surround Modes",
+                    "type": "string",
+                    "list": "modes"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "commands": {
+          "setSurroundMode": {
+            "arguments": [
+              {
+                "name": "mode",
+                "schema": {
+                  "title": "Set Surround Mode",
+                  "type": "string",
+                  "list": "modes"
+                },
+                "required": true
+              }
+            ]
+          },
+          "getSurroundMode": {
+            "arguments": []
+          },
+          "modeUp": {
+            "arguments": []
+          },
+          "modeDown": {
+            "arguments": []
+          }
+        },
+        "lists": {
+          "modes": [
+            "STEREO",
+            "DIRECT",
+            "FILM",
+            "ACTION",
+            "MUSICAL",
+            "ORCHESTRA",
+            "UNPLUGGED",
+            "STUDIO-MIX",
+            "TV LOGIC",
+            "ALL CH STEREO",
+            "THEATER",
+            "ENHANCED",
+            "MONO ",
+            "PURE AUDIO ",
+            "FULL MONO",
+            "Multi Zone Music",
+            "Straight Decode",
+            "DOLBY ATMOS",
+            "PLII Music",
+            "DTS:X/Neural:X",
+            "Neo:6 Music",
+            "PLII Game",
+            "Auto Surround"
+          ]
+        }
+      }
+    },
+    "zone2": {
+      "switch": {
+        "id": "switch",
+        "version": 1,
+        "name": "Switch",
+        "attributes": {
+          "switch": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "SwitchState",
+                  "type": "string",
+                  "enum": [
+                    "on",
+                    "off"
+                  ],
+                  "default": "off"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "off": {
+            "arguments": []
+          },
+          "on": {
+            "arguments": []
+          }
+        }
+      },
+      "audioMute": {
+        "id": "audioMute",
+        "version": 1,
+        "name": "Audio Mute",
+        "status": "live",
+        "attributes": {
+          "mute": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "MuteState",
+                  "type": "string",
+                  "enum": [
+                    "muted",
+                    "unmuted"
+                  ],
+                  "default": "unmuted"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "setMute": {
+            "arguments": [
+              {
+                "name": "state",
+                "schema": {
+                  "title": "MuteState",
+                  "type": "string",
+                  "enum": [
+                    "muted",
+                    "unmuted"
+                  ]
+                },
+                "required": true
+              }
+            ]
+          },
+          "mute": {
+            "arguments": []
+          },
+          "unmute": {
+            "arguments": []
+          }
+        }
+      },
+      "audioVolume": {
+        "id": "audioVolume",
+        "version": 1,
+        "name": "Audio Volume",
+        "attributes": {
+          "volume": {
+            "schema": {
+              "title": "IntegerPercent",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "default": 0
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "%"
+                  ],
+                  "default": "%"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        "commands": {
+          "setVolume": {
+            "arguments": [
+              {
+                "name": "volume",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "required": true
+              }
+            ]
+          },
+          "getVolume": {
+            "arguments": []
+          },
+          "volumeUp": {
+            "arguments": []
+          },
+          "volumeDown": {
+            "arguments": []
+          }
+        }
+      },
+      "mediaInputSource": {
+        "id": "mediaInputSource",
+        "version": 1,
+        "name": "Media Input Source",
+        "attributes": {
+          "inputSource": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "title": "MediaSource",
+                  "type": "string",
+                  "list": "inputs",
+                  "default": "CD"
+                },
+                "supported": {
+                  "supportedInputSources": {
+                    "title": "MediaSource",
+                    "type": "string",
+                    "list": "inputs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "commands": {
+          "setInputSource": {
+            "arguments": [
+              {
+                "name": "mode",
+                "schema": {
+                  "title": "MediaSource",
+                  "type": "string",
+                  "list": "inputs"
+                },
+                "required": true
+              }
+            ]
+          },
+          "getInputSource": {
+            "arguments": []
+          }
+        },
+        "lists": {
+          "inputs": [
+            "CBL/SAT",
+            "GAME",
+            "AUX",
+            "BD/DVD",
+            "STRM BOX",
+            "TV",
+            "PHONO",
+            "CD",
+            "FM",
+            "AM",
+            "TUNER",
+            "USB(Front)",
+            "NET",
+            "USB(toggle)",
+            "BT AUDIO",
+            "HDMI 5",
+            "HDMI 6",
+            "HDMI 7"
+          ]
+        }
+      }
+    }
+  }

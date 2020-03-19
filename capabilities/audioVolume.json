@@ -1,0 +1,61 @@
+{
+    "id": "audioVolume",
+    "version": 1,
+    "name": "Audio Volume",
+    "tags": ["receiver", "AV", "media player", "tv", "amplifier", "generic"],
+    "attributes": {
+        "volume": {
+            "schema": {
+                "title": "IntegerPercent",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "default": 0
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": [
+                            "%"
+                        ],
+                        "default": "%"
+                    }
+                },
+                "required": [
+                    "value"
+                ]
+            }
+        }
+    },
+    "commands": {
+        "setVolume": {
+            "arguments": [
+                {
+                    "name": "volume",
+                    "schema": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                    },
+                    "required": true
+                }
+            ]
+        },
+        "getVolume": {
+            "arguments": []
+        },
+        "volumeUp": {
+            "arguments": [
+
+            ]
+        },
+        "volumeDown": {
+            "arguments": [
+
+            ]
+        }
+    }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "mediaInputSource",
+  "version": 1,
+  "name": "Media Input Source",
+  "tags": ["receiver", "AV", "media player", "tv"],
+  "attributes": {
+    "inputSource": {
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "title": "MediaSource",
+            "type": "string",
+            "list": "inputs",
+            "default": "CD"
+          },
+          "supported": {
+            "supportedInputSources": {
+              "title": "MediaSource",
+              "type": "string",
+              "list": "inputs"
+            }
+          }
+        }
+      }
+    }
+  },
+  "commands": {
+    "setInputSource": {
+      "arguments": [
+        {
+          "name": "mode",
+          "schema": {
+            "title": "MediaSource",
+            "type": "string",
+            "list": "inputs"
+          },
+          "required": true
+        }
+      ]
+    },
+    "getInputSource": {
+      "arguments": []
+    }
+  },
+  "lists": {
+    "inputs": [
+      "CBL/SAT",
+      "GAME",
+      "AUX",
+      "BD/DVD",
+      "STRM BOX",
+      "TV",
+      "PHONO",
+      "CD",
+      "FM",
+      "AM",
+      "TUNER",
+      "USB(Front)",
+      "NET",
+      "USB(toggle)",
+      "BT AUDIO",
+      "HDMI 5",
+      "HDMI 6",
+      "HDMI 7"
+    ]
+  }
+}
