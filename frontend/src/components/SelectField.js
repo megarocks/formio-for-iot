@@ -18,7 +18,6 @@ const SelectField = ({ fieldName, options, placeHolder, label, onCreate, ...rest
   const selected = get(`values.${fieldName}`, formik)
 
   const getSelected = () => {
-    debugger
     if (Array.isArray(selected)) {
       return selected.map(s => rawEntities.find(rE => getOptionValue(rE) === s))
     } else {
@@ -49,7 +48,6 @@ const SelectField = ({ fieldName, options, placeHolder, label, onCreate, ...rest
     closeMenuOnSelect: true,
     getOptionLabel,
     getOptionValue,
-    // styles: customStyles,
     ...restProps
   }
 

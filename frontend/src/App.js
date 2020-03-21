@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
-import { get, cloneDeep, set } from 'lodash/fp'
+import { get } from 'lodash/fp'
 
 import SimpleField from './components/SimpleField'
 import SelectField from './components/SelectField'
@@ -10,14 +10,37 @@ export const DeviceDefintionContext = React.createContext()
 function App() {
   const formik = useFormik({
     initialValues: {
-      id: '',
-      name: '',
-      type: [],
-      friendlyName: '',
+      id: 'test',
+      name: 'test',
+      type: ['Receiver'],
+      friendlyName: 'test',
       components: ['main'],
-      location: '',
+      location: 'test',
       supportedCapabilities: {
         main: ['audioMute'],
+      },
+      main: {
+        audioMute: {
+          id: 'test',
+          version: 7,
+          name: 'test',
+          status: 'test',
+          commandNames: ['setMute'],
+          commands: {
+            setMute: {
+              arguments: [
+                {
+                  name: 'test',
+                  required: true,
+                  schema: {
+                    type: 'string',
+                    enum: ['muted', 'unmuted'],
+                  },
+                },
+              ],
+            },
+          },
+        },
       },
     },
     onSubmit: values => {
@@ -104,7 +127,6 @@ function App() {
               {capabilities.map(capability => {
                 const fieldNamePrefix = `${component}.${capability}`
 
-                const commands = get(`values.${fieldNamePrefix}.commands`, formik) || {}
                 const commandNames = get(`values.${fieldNamePrefix}.commandNames`, formik) || []
 
                 const addNewArgument = command => () => {
@@ -114,7 +136,9 @@ function App() {
 
                 return (
                   <div className='p-2 m-2 border'>
-                    <h3>{component} component, {capability} capability:</h3>
+                    <h3>
+                      {component} component, {capability} capability:
+                    </h3>
                     <SimpleField fieldName={`${fieldNamePrefix}.id`} label={`${component} - ${capability} ID:`} />
                     <SimpleField
                       fieldName={`${fieldNamePrefix}.version`}
@@ -128,7 +152,11 @@ function App() {
                     />
                     <h4>Commands:</h4>
 
-                    <SelectField options={commandsOptions} fieldName={`${fieldNamePrefix}.commandNames`} />
+                    <SelectField
+                      options={commandsOptions}
+                      fieldName={`${fieldNamePrefix}.commandNames`}
+                      onCreateOption={onCreateNewCommand}
+                    />
 
                     {commandNames.map(command => {
                       return (
@@ -143,8 +171,14 @@ function App() {
                                     label='Argument Name:'
                                   />
                                   <SimpleField
-                                    fieldName={`${fieldNamePrefix}.commands.${command}.arguments.${idx}.required`} type='checkbox'
-                                    inputProps={{ checked: get(`values.${fieldNamePrefix}.commands.${command}.arguments.${idx}.required`, formik) }}
+                                    fieldName={`${fieldNamePrefix}.commands.${command}.arguments.${idx}.required`}
+                                    type='checkbox'
+                                    inputProps={{
+                                      checked: get(
+                                        `values.${fieldNamePrefix}.commands.${command}.arguments.${idx}.required`,
+                                        formik,
+                                      ),
+                                    }}
                                     label='Required'
                                   />
                                   <SelectField
