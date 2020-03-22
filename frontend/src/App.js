@@ -5,7 +5,7 @@ import { get } from 'lodash/fp'
 import SimpleField from './components/SimpleField'
 import SelectField from './components/SelectField'
 
-export const DeviceDefintionContext = React.createContext()
+export const DeviceDefinitionContext = React.createContext()
 
 function App() {
   const formik = useFormik({
@@ -100,7 +100,7 @@ function App() {
   }
 
   return (
-    <DeviceDefintionContext.Provider value={{ formik }}>
+    <DeviceDefinitionContext.Provider value={{ formik }}>
       <div className='App container'>
         <form onSubmit={formik.handleSubmit}>
           <SimpleField fieldName='id' label='Device Definition ID' />
@@ -243,7 +243,7 @@ function App() {
         </form>
         <pre>{JSON.stringify(formik.values, null, 2)}</pre>
       </div>
-    </DeviceDefintionContext.Provider>
+    </DeviceDefinitionContext.Provider>
   )
 }
 

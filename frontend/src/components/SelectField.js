@@ -2,10 +2,10 @@ import React from 'react'
 import CreatableSelect from 'react-select/creatable'
 import { get } from 'lodash/fp'
 
-import { DeviceDefintionContext } from '../App.js'
+import { DeviceDefinitionContext } from '../App.js'
 
 const SelectField = ({ fieldName, options, placeHolder, label, onCreate, ...restProps }) => {
-  const context = React.useContext(DeviceDefintionContext)
+  const context = React.useContext(DeviceDefinitionContext)
   const formik = context.formik
 
   const defaultGetOptionLabel = option => option?.label
