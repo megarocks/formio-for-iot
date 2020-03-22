@@ -6,6 +6,8 @@ import ReactJson from 'react-json-view'
 import SimpleField from './components/SimpleField'
 import SelectField from './components/SelectField'
 
+import familyRoomReceiver from './examples/family_room_receiver (localized)'
+
 export const DeviceDefinitionContext = React.createContext()
 
 // TODO Questions:
@@ -15,40 +17,41 @@ export const DeviceDefinitionContext = React.createContext()
 
 function App() {
   const formik = useFormik({
-    initialValues: {
-      id: 'test',
-      name: 'test',
-      type: ['Receiver'],
-      friendlyName: 'test',
-      components: ['main'],
-      location: 'test',
-      supportedCapabilities: {
-        main: ['audioMute'],
-      },
-      main: {
-        audioMute: {
-          id: 'test',
-          version: 7,
-          name: 'test',
-          status: 'test',
-          commandNames: ['setMute'],
-          // commands: {
-          //   setMute: {
-          //     arguments: [
-          //       {
-          //         name: 'test',
-          //         required: true,
-          //         schema: {
-          //           type: 'string',
-          //           enum: ['muted', 'unmuted'],
-          //         },
-          //       },
-          //     ],
-          //   },
-          // },
-        },
-      },
-    },
+    // initialValues: {
+    //   id: 'test',
+    //   name: 'test',
+    //   type: ['Receiver'],
+    //   friendlyName: 'test',
+    //   components: ['main'],
+    //   location: 'test',
+    //   supportedCapabilities: {
+    //     main: ['audioMute'],
+    //   },
+    //   main: {
+    //     audioMute: {
+    //       id: 'test',
+    //       version: 7,
+    //       name: 'test',
+    //       status: 'test',
+    //       commandNames: ['setMute'],
+    //       // commands: {
+    //       //   setMute: {
+    //       //     arguments: [
+    //       //       {
+    //       //         name: 'test',
+    //       //         required: true,
+    //       //         schema: {
+    //       //           type: 'string',
+    //       //           enum: ['muted', 'unmuted'],
+    //       //         },
+    //       //       },
+    //       //     ],
+    //       //   },
+    //       // },
+    //     },
+    //   },
+    // },
+    initialValues: familyRoomReceiver,
     onSubmit: values => {
       console.log(values)
     },
@@ -219,16 +222,32 @@ function App() {
         <div className='row'>
           <div className='col-sm'>
             <form onSubmit={formik.handleSubmit}>
-              <SimpleField fieldName='id' label='Device Definition ID' />
-              <SimpleField fieldName='name' label='Device Definition Name' />
-              <SimpleField fieldName='friendlyName' label='Friendly Name' />
-              <SelectField fieldName='type' options={typeOptions} label='Type' onCreateOption={onCreateNewType} />
-              <SelectField
-                fieldName='components'
-                options={componentOptions}
-                label='Components'
-                onCreateOption={onCreateNewComponent}
-              />
+              <div className='row'>
+                <div className='col-sm'>
+                  <SimpleField fieldName='id' label='Device Definition ID' />
+                </div>
+                <div className='col-sm-6'>
+                  <SimpleField fieldName='name' label='Device Definition Name' />
+                </div>
+                <div className='col-sm-6'>
+                  <SimpleField fieldName='friendlyName' label='Friendly Name' />
+                </div>
+                <div className='col-sm-6'>
+                  <SimpleField fieldName='location' label='Location' />
+                </div>
+                <div className='col-sm-6'>
+                  <SelectField fieldName='type' options={typeOptions} label='Type' onCreateOption={onCreateNewType} />
+                </div>
+                <div className='col-sm-6'>
+                  <SelectField
+                    fieldName='components'
+                    options={componentOptions}
+                    label='Components'
+                    onCreateOption={onCreateNewComponent}
+                  />
+                </div>
+              </div>
+
               {componentNames.map(componentName => (
                 <SelectField
                   fieldName={`supportedCapabilities.${componentName}`}
@@ -247,26 +266,25 @@ function App() {
                     const commandNames = get(`${capabilityPath}.commandNames`, formik.values) || []
                     const listsNames = get(`${capabilityPath}.listsNames`, formik.values) || []
 
-                    const addNewArgument = commandName => () => {
-                      const currentArguments =
-                        get(`${capabilityPath}.commands.${commandName}.arguments`, formik.values) || []
-                      formik.setFieldValue(`${capabilityPath}.commands.${commandName}.arguments`, [
-                        ...currentArguments,
-                        {},
-                      ])
-                    }
-
                     return (
                       <div className='p-2 m-2 border'>
                         <h3>
                           {componentName} component, {capabilityName} capability:
                         </h3>
 
-                        <div className='border p-2 m-2'>
-                          <SimpleField fieldName={`${capabilityPath}.id`} label={`ID:`} />
-                          <SimpleField fieldName={`${capabilityPath}.version`} label={`Version:`} type='number' />
-                          <SimpleField fieldName={`${capabilityPath}.name`} label={`Name:`} />
-                          <SimpleField fieldName={`${capabilityPath}.status`} label={`Status:`} />
+                        <div className='row'>
+                          <div className='col-sm-6'>
+                            <SimpleField fieldName={`${capabilityPath}.id`} label={`ID:`} />
+                          </div>
+                          <div className='col-sm-6'>
+                            <SimpleField fieldName={`${capabilityPath}.version`} label={`Version:`} type='number' />
+                          </div>
+                          <div className='col-sm-6'>
+                            <SimpleField fieldName={`${capabilityPath}.name`} label={`Name:`} />
+                          </div>
+                          <div className='col-sm-6'>
+                            <SimpleField fieldName={`${capabilityPath}.status`} label={`Status:`} />
+                          </div>
                         </div>
 
                         <div className='border p-2 m-2'>
@@ -355,9 +373,11 @@ function App() {
                                         (argumentType === 'string' && (
                                           <>
                                             {!!listsNames.length && (
-                                              <SimpleField
+                                              <SelectField
+                                                isMulti={false}
                                                 fieldName={`${argumentPath}.schema.list`}
-                                                label='Schema List'
+                                                label='List'
+                                                options={listsNames.map(l => ({ label: l, value: l }))}
                                               />
                                             )}
                                             <SelectField
