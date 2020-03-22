@@ -12,6 +12,7 @@
     "prettier": "^1.19.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-json-view": "^1.19.1",
     "react-scripts": "3.4.0",
     "react-select": "^3.0.8"
   },
