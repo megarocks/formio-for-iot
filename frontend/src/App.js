@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
-import { get } from 'lodash/fp'
+import { get, set, pick } from 'lodash/fp'
 import ReactJson from 'react-json-view'
 
 import SimpleField from './components/SimpleField'
@@ -79,7 +79,7 @@ function App() {
 
   const [componentOptions, setComponentOptions] = useState([
     { label: 'main', value: 'main' },
-    { label: 'zone2', value: 'zone2' },
+    { label: 'zone 2', value: 'zone 2' },
   ])
 
   const [commandsOptions, setCommandsOptions] = useState([
@@ -216,6 +216,78 @@ function App() {
 
   const supportedCapabilities = Object.entries(formik.values.supportedCapabilities || {})
 
+  useEffect(() => {
+    const defaultRootFields = ['id', 'name', 'type', 'friendlyName', 'components', 'supportedCapabilities']
+    let currentValues = formik.values
+
+    currentValues = withHelperFields(currentValues)
+    const withOnlySelectedComponents = getWithOnlySelectedComponents(currentValues)
+    const withOnlySelectedCapabilities = getWithOnlySelectedCapabilities(withOnlySelectedComponents)
+    const withOnlySelectedCommands = getWithOnlySelectedCommands(withOnlySelectedCapabilities)
+
+    formik.setValues(withOnlySelectedCommands)
+
+    function getWithOnlySelectedComponents(values) {
+      // leave at supportedCapabilities and at root only fields which equal to components array
+      const currentComponents = values.components || []
+      const withOnlySelectedComponentsAtCapabilities = {
+        ...values,
+        supportedCapabilities: pick(currentComponents, values.supportedCapabilities || {}),
+      }
+      const withOnlySupportedComponentsAtRoot = pick(
+        [...defaultRootFields, ...currentComponents],
+        withOnlySelectedComponentsAtCapabilities,
+      )
+      return withOnlySupportedComponentsAtRoot
+    }
+    function getWithOnlySelectedCapabilities(values) {
+      values.components.forEach(component => {
+        values[component] = pick(values.supportedCapabilities[component], values[component])
+      })
+      return { ...values }
+    }
+
+    function getWithOnlySelectedCommands(values) {
+      values.components.forEach(component => {
+        const capabilitiesMap = values[component]
+        Object.keys(capabilitiesMap).forEach(capabilityName => {
+          const capability = get([component, capabilityName], values)
+          const onlySelectedAttributesOfCurrentCapability = pick(capability.commandNames, capability)
+          set(onlySelectedAttributesOfCurrentCapability, [component, capabilityName], values)
+        })
+      })
+      return values
+    }
+
+    function withHelperFields(values) {
+      values.components.forEach(component => {
+        const componentCapabilities = pick(values.supportedCapabilities[component], values[component])
+        Object.keys(componentCapabilities).forEach(capabilityName => {
+          const capability = get([component, capabilityName], values)
+
+          const commandNames = Object.keys(capability.commands || {})
+          const attributeNames = Object.keys(capability.attributes || {})
+          const listsNames = Object.keys(capability.lists || {})
+
+          attributeNames.forEach(attribute => {
+            const properties = get(['attributes', attribute, 'schema', 'properties'], capability)
+            const propertyNames = Object.keys(properties)
+            values = set(
+              [component, capabilityName, 'attributes', attribute, 'schema', 'propertyNames'],
+              propertyNames,
+              values,
+            )
+          })
+
+          values = set([component, capabilityName, 'commandNames'], commandNames, values)
+          values = set([component, capabilityName, 'attributeNames'], attributeNames, values)
+          values = set([component, capabilityName, 'listsNames'], listsNames, values)
+        })
+      })
+      return values
+    }
+  }, [JSON.stringify(formik.values)])
+
   return (
     <DeviceDefinitionContext.Provider value={{ formik }}>
       <div className='App container-fluid'>
@@ -288,31 +360,13 @@ function App() {
                         </div>
 
                         <div className='border p-2 m-2'>
-                          <h4>Lists:</h4>
-                          <SelectField
-                            options={listsOptions}
-                            fieldName={`${capabilityPath}.listsNames`}
-                            onCreateOption={onCreateNewList}
-                          />
-                          {listsNames.map(listName => {
-                            return (
-                              <SelectField
-                                label={`${listName} list:`}
-                                options={listItemOptions}
-                                fieldName={`${capabilityPath}.lists.${listName}`}
-                                onCreateOption={onCreateNewListItem}
-                              />
-                            )
-                          })}
-                        </div>
-
-                        <div className='border p-2 m-2'>
                           <h4>Commands:</h4>
                           <SelectField
                             options={commandsOptions}
                             fieldName={`${capabilityPath}.commandNames`}
                             onCreateOption={onCreateNewCommand}
                           />
+
                           {commandNames.map(commandName => {
                             const capabilityCommandPath = `${capabilityPath}.commands.${commandName}`
                             const commandArguments = get(`${capabilityCommandPath}.arguments`, formik.values) || []
@@ -397,6 +451,25 @@ function App() {
                                   )
                                 })}
                               </div>
+                            )
+                          })}
+                        </div>
+
+                        <div className='border p-2 m-2'>
+                          <h4>Lists:</h4>
+                          <SelectField
+                            options={listsOptions}
+                            fieldName={`${capabilityPath}.listsNames`}
+                            onCreateOption={onCreateNewList}
+                          />
+                          {listsNames.map(listName => {
+                            return (
+                              <SelectField
+                                label={`${listName} list:`}
+                                options={listItemOptions}
+                                fieldName={`${capabilityPath}.lists.${listName}`}
+                                onCreateOption={onCreateNewListItem}
+                              />
                             )
                           })}
                         </div>
