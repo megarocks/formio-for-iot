@@ -7,6 +7,11 @@ import SelectField from './components/SelectField'
 
 export const DeviceDefinitionContext = React.createContext()
 
+// TODO Questions:
+// commands.arguments.schema.list only when string?
+// commands.arguments.schema.title not every time. ok?
+// commands.arguments.schema.type.object than what?
+
 function App() {
   const formik = useFormik({
     initialValues: {
@@ -79,6 +84,29 @@ function App() {
     { label: 'unmuted', value: 'unmuted' },
   ])
 
+  const [listsOptions, setListsOptions] = useState([{ label: 'inputs', value: 'inputs' }])
+
+  const [listItemOptions, setListItemOptions] = useState([
+    { label: 'CBL/SAT', value: 'CBL/SAT' },
+    { label: 'GAME', value: 'GAME' },
+    { label: 'AUX', value: 'AUX' },
+    { label: 'BD/DVD', value: 'BD/DVD' },
+    { label: 'STRM BOX', value: 'STRM BOX' },
+    { label: 'TV', value: 'TV' },
+    { label: 'PHONO', value: 'PHONO' },
+    { label: 'CD', value: 'CD' },
+    { label: 'FM', value: 'FM' },
+    { label: 'AM', value: 'AM' },
+    { label: 'TUNER', value: 'TUNER' },
+    { label: 'USB(Front)', value: 'USB(Front)' },
+    { label: 'NET', value: 'NET' },
+    { label: 'USB(toggle)', value: 'USB(toggle)' },
+    { label: 'BT AUDIO', value: 'BT AUDIO' },
+    { label: 'HDMI 5', value: 'HDMI 5' },
+    { label: 'HDMI 6', value: 'HDMI 6' },
+    { label: 'HDMI 7', value: 'HDMI 7' },
+  ])
+
   const onCreateNewType = created => {
     setTypeOptions([...typeOptions, { label: created, value: created }])
   }
@@ -97,6 +125,14 @@ function App() {
 
   const onCreateNewStringArgumentEnumOption = created => {
     setStringArgumentEnumOptions([...stringArgumentEnumOptions, { label: created, value: created }])
+  }
+
+  const onCreateNewList = created => {
+    setListsOptions([...listsOptions, { label: created, value: created }])
+  }
+
+  const onCreateNewListItem = created => {
+    setListItemOptions([...listItemOptions, { label: created, value: created }])
   }
 
   return (
@@ -128,6 +164,7 @@ function App() {
                 const fieldNamePrefix = `${component}.${capability}`
 
                 const commandNames = get(`values.${fieldNamePrefix}.commandNames`, formik) || []
+                const listsNames = get(`values.${fieldNamePrefix}.listsNames`, formik) || []
 
                 const addNewArgument = command => () => {
                   const currentArguments = get(`values.${fieldNamePrefix}.commands.${command}.arguments`, formik) || []
@@ -150,14 +187,30 @@ function App() {
                       fieldName={`${fieldNamePrefix}.status`}
                       label={`${component} - ${capability} Status:`}
                     />
-                    <h4>Commands:</h4>
 
+                    <h4>Lists:</h4>
+                    <SelectField
+                      options={listsOptions}
+                      fieldName={`${fieldNamePrefix}.listsNames`}
+                      onCreateOption={onCreateNewList}
+                    />
+                    {listsNames.map(listName => {
+                      return (
+                        <SelectField
+                          label={`${listName} list:`}
+                          options={listItemOptions}
+                          fieldName={`${fieldNamePrefix}.lists.${listName}`}
+                          onCreateOption={onCreateNewListItem}
+                        />
+                      )
+                    })}
+
+                    <h4>Commands:</h4>
                     <SelectField
                       options={commandsOptions}
                       fieldName={`${fieldNamePrefix}.commandNames`}
                       onCreateOption={onCreateNewCommand}
                     />
-
                     {commandNames.map(command => {
                       return (
                         <div className='m-2 p-2 border'>
@@ -191,7 +244,14 @@ function App() {
                                       { label: 'object', value: 'object' },
                                     ]}
                                   />
-
+                                  <SimpleField
+                                    fieldName={`${fieldNamePrefix}.commands.${command}.arguments.${idx}.schema.title`}
+                                    label='Schema Title'
+                                  />
+                                  <SimpleField
+                                    fieldName={`${fieldNamePrefix}.commands.${command}.arguments.${idx}.schema.list`}
+                                    label='Schema List'
+                                  />
                                   {(get(
                                     `values.${fieldNamePrefix}.commands.${command}.arguments.${idx}.schema.type`,
                                     formik,
