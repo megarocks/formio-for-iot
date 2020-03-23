@@ -1,61 +1,64 @@
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import CreatableSelect from 'react-select/creatable'
 import { get } from 'lodash/fp'
 
 import { DeviceDefinitionContext } from '../App.js'
 
-const SelectField = ({ fieldName, options, placeHolder, label, onCreate, ...restProps }) => {
+const getOptionLabel = option => option?.label
+const getOptionValue = option => option?.value
+
+let formik = {
+  setFieldValue: () => {},
+}
+
+const SelectField = ({ fieldName, placeHolder, label, options = [], onCreateOption, isMulti = true }) => {
   const context = React.useContext(DeviceDefinitionContext)
-  const formik = context.formik
+  formik = context.formik
 
-  const defaultGetOptionLabel = option => option?.label
-  const defaultGetOptionValue = option => option?.value
+  // raw value stored at form state
+  const fieldValue = get(`values.${fieldName}`, formik)
 
-  const getOptionLabel = restProps.getOptionLabel || defaultGetOptionLabel
-  const getOptionValue = restProps.getOptionValue || defaultGetOptionValue
-
-  const rawEntities = options
-  const selected = get(`values.${fieldName}`, formik)
-
-  const getSelected = () => {
-    if (Array.isArray(selected)) {
-      return selected.map(s => rawEntities.find(rE => getOptionValue(rE) === s))
+  // value as react select understands it
+  // it can be array for multiselect, or string || number for simple select
+  const value = useMemo(() => {
+    if (Array.isArray(fieldValue)) {
+      return fieldValue.map(s => options.find(rE => getOptionValue(rE) === s))
     } else {
-      return rawEntities.find(rE => getOptionValue(rE) === selected)
+      return options.find(rE => getOptionValue(rE) === fieldValue)
     }
-  }
+  }, [fieldValue, options])
 
-  const onChange = updatedSelection => {
-    if (Array.isArray(updatedSelection)) {
-      formik.setFieldValue(fieldName, updatedSelection.map(getOptionValue))
-    } else {
-      formik.setFieldValue(fieldName, getOptionValue(updatedSelection))
-    }
-  }
+  const onChange = useCallback(
+    updatedSelection => {
+      if (Array.isArray(updatedSelection)) {
+        formik.setFieldValue(fieldName, updatedSelection.map(getOptionValue))
+      } else {
+        formik.setFieldValue(fieldName, getOptionValue(updatedSelection))
+      }
+    },
+    [fieldName],
+  )
 
-  const onBlur = () => {
-    formik.setFieldTouched(fieldName, true, true)
-  }
-
-  const selectProps = {
-    options: rawEntities,
-    isMulti: true,
-    onChange,
-    onBlur,
-    name: fieldName,
-    placeholder: placeHolder,
-    value: getSelected(),
-    closeMenuOnSelect: true,
-    getOptionLabel,
-    getOptionValue,
-    ...restProps
-  }
-
-  return (
-    <div className='form-group'>
-      <label htmlFor={fieldName}>{label}</label>
-      <CreatableSelect {...selectProps} />
-    </div>
+  return useMemo(
+    () => (
+      <div className='form-group'>
+        <label htmlFor={fieldName}>{label}</label>
+        <CreatableSelect
+          options={options}
+          isMulti={isMulti}
+          closeMenuOnSelect={true}
+          onChange={onChange}
+          name={fieldName}
+          placeholder={placeHolder}
+          value={value}
+          getOptionLabel={getOptionLabel}
+          getOptionValue={getOptionValue}
+          onCreateOption={onCreateOption}
+        />
+      </div>
+    ),
+    // eslint-disable-next-line
+    [options.length, JSON.stringify(value)],
   )
 }
 

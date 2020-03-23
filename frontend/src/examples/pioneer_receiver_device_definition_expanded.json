@@ -1,11 +1,11 @@
 {
-    "id": "pioneer_0001",
+    "id": "pioneer_0002",
     "name": "pioneer receiver",
     "type": [
       "Receiver",
       "Media Player"
     ],
-    "friendlyName": "Pioneer Onkyo Receivers Post 2016",
+    "friendlyName": "Pioneer Onkyo Receivers Post 2016 - expanded",
     "components": [
       "main",
       "zone2"

@@ -17,7 +17,7 @@ const SimpleField = ({ fieldName, label = '', placeholder = '', type = 'text', i
         placeholder={placeholder}
         name={fieldName}
         onChange={formik.handleChange}
-        value={get(`values.${fieldName}`, formik)}
+        value={get(`values.${fieldName}`, formik) || ''}
         {...inputProps}
       />
     </div>

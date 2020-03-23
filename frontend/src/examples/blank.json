@@ -1,0 +1,14 @@
+{
+  "id": "0",
+  "name": "blank",
+  "type": [],
+  "friendlyName": "blank",
+  "components": ["main"],
+  "location": "",
+  "supportedCapabilities": {
+    "main": ["switch"]
+  },
+  "main": {
+    "switch": {}
+  }
+}
