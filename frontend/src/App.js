@@ -33,7 +33,7 @@ function App() {
     <DeviceDefinitionContext.Provider value={{ formik, allDefinitions }}>
       <Container fluid>
         <InitialDefinitionSelector value={initialValues.id} setInitialValues={setInitialValues} />
-        <Tabs defaultActiveKey='form' unmountOnExit>
+        <Tabs defaultActiveKey='form' id='form-json-tabs' unmountOnExit>
           <Tab title='Form' eventKey='form'>
             <DeviceDefinitionForm />
           </Tab>

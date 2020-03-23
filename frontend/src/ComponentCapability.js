@@ -24,7 +24,7 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
         {componentName} component, {capabilityName} capability:
       </h3>
 
-      <Tabs defaultActiveKey='main' unmountOnExit>
+      <Tabs defaultActiveKey='main' id='component-capability-features' unmountOnExit>
         <Tab title='Main' eventKey='main'>
           <div className='row'>
             <div className='col-sm-6'>
