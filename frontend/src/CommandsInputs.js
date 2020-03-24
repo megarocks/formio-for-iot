@@ -1,24 +1,11 @@
 import React from 'react'
 import CreatableSelect from 'react-select/creatable'
-import { get, pick } from 'lodash/fp'
+import { get } from 'lodash/fp'
 
-import CommandArgumentInputs from './CommandArgumentInputs'
 import { DeviceDefinitionContext } from './App'
 import useSelectorOptions from './useSelectorOptions'
-import { createOption, getOptionValue } from './utils'
+import { createOption, createOnChangeHandler } from './utils'
 import ArgumentsPanel from './ArgumentsPanel'
-
-function createOnChangeHandler({ fieldPath, values, setFieldValue }) {
-  return (currentlySelected) => {
-    const selectedOptions = (currentlySelected || []).map(getOptionValue)
-    let newFieldValue = get(fieldPath, values)
-    selectedOptions.forEach((option) => {
-      if (!(option in newFieldValue)) newFieldValue[option] = {}
-    })
-    newFieldValue = pick(selectedOptions, newFieldValue)
-    setFieldValue(fieldPath, newFieldValue)
-  }
-}
 
 const CommandsInputs = ({ capabilityPath }) => {
   const context = React.useContext(DeviceDefinitionContext)

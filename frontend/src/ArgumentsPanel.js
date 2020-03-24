@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { get } from 'lodash/fp'
 import { createOption, getOptionValue } from './utils'
-import CreatableSelect from 'react-select/creatable/dist/react-select.esm'
+import CreatableSelect from 'react-select/creatable'
 import CommandArgumentInputs from './CommandArgumentInputs'
 import { DeviceDefinitionContext } from './App'
 

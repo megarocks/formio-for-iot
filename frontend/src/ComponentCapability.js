@@ -44,7 +44,7 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
           <CommandsInputs capabilityPath={capabilityPath} />
         </Tab>
         <Tab title='Lists' eventKey='lists'>
-          <ListsInputs capabilityPath={capabilityPath} listsNames={listsNames} />
+          <ListsInputs capabilityPath={capabilityPath} />
         </Tab>
         <Tab title='Attributes' eventKey='attributes'>
           <AttributesInputs listsNames={listsNames} capabilityPath={capabilityPath} attributeNames={attributeNames} />

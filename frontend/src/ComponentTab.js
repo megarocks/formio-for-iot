@@ -21,7 +21,7 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
         <Row>
           <Col sm={3}>
             <Nav variant='pills' className='flex-column'>
-              {componentCapabilities.map(capability => (
+              {componentCapabilities.map((capability) => (
                 <Nav.Item key={componentName + capability + 'nav-item'}>
                   <Nav.Link eventKey={capability}>{capability}</Nav.Link>
                 </Nav.Item>
@@ -30,7 +30,7 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
           </Col>
           <Col sm={9}>
             <Tab.Content>
-              {componentCapabilities.map(capability => (
+              {componentCapabilities.map((capability) => (
                 <Tab.Pane eventKey={capability} key={componentName + capability + 'tab-pane'}>
                   <ComponentCapability componentName={componentName} capabilityName={capability} />
                 </Tab.Pane>
