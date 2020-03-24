@@ -20,7 +20,7 @@ const AttributesInputs = ({ capabilityPath, listsNames = [], attributeNames = []
         fieldName={`${capabilityPath}.attributeNames`}
         onCreateOption={createNewAttribute}
       />
-      {attributeNames.map(attributeName => {
+      {attributeNames.map((attributeName) => {
         const currentAttributeSchemaPath = `${capabilityPath}.attributes.${attributeName}.schema`
         const propertyNames = get(`${currentAttributeSchemaPath}.propertyNames`, formik.values) || []
 
@@ -50,9 +50,9 @@ const AttributesInputs = ({ capabilityPath, listsNames = [], attributeNames = []
             <SelectField
               fieldName={`${currentAttributeSchemaPath}.required`}
               label='Required Properties'
-              options={propertyNames.map(p => ({ label: p, value: p }))}
+              options={propertyNames.map((p) => ({ label: p, value: p }))}
             />
-            {propertyNames.map(propertyName => {
+            {propertyNames.map((propertyName) => {
               const propertyPath = `${currentAttributeSchemaPath}.properties.${propertyName}`
               const propertyType = get(`${propertyPath}.type`, formik.values)
               return (
@@ -74,7 +74,7 @@ const AttributesInputs = ({ capabilityPath, listsNames = [], attributeNames = []
                           isMulti={false}
                           fieldName={`${propertyPath}.list`}
                           label='List'
-                          options={listsNames.map(l => ({ label: l, value: l }))}
+                          options={listsNames.map((l) => ({ label: l, value: l }))}
                         />
                       )}
                     </>

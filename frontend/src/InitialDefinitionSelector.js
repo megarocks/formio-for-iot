@@ -6,8 +6,11 @@ import { DeviceDefinitionContext } from './App'
 
 const InitialDefinitionSelector = ({ value, setInitialValues }) => {
   const { allDefinitions } = useContext(DeviceDefinitionContext)
-
   const { definitions } = useSelectorOptions()
+  const onChange = selected => {
+    const selectedDefinition = allDefinitions.find(d => d.id === selected.value)
+    setInitialValues(selectedDefinition)
+  }
 
   return (
     <ReactSelect
@@ -15,10 +18,7 @@ const InitialDefinitionSelector = ({ value, setInitialValues }) => {
       className='m-3'
       placeholder='Select device definition'
       value={definitions.find(d => d.value === value)}
-      onChange={selected => {
-        const selectedDefinition = allDefinitions.find(d => d.id === selected.value)
-        setInitialValues(selectedDefinition)
-      }}
+      onChange={onChange}
     />
   )
 }

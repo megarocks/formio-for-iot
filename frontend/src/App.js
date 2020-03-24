@@ -16,23 +16,26 @@ export const DeviceDefinitionContext = React.createContext()
 // commands.arguments.schema.type.object than what?
 
 function App() {
-  const [initialValues, setInitialValues] = useState(allDefinitions[0])
+  const [initialValues, setInitialValues] = useState(allDefinitions[2])
 
   const formik = useFormik({
     initialValues,
-    onSubmit: values => {
+    onSubmit: (values) => {
       console.log(values)
     },
     enableReinitialize: true,
   })
 
   const setValues = useCallback(formik.setValues, [])
-  useFormValuesEffects({ values: formik.values, setValues })
+  useFormValuesEffects({ values: formik.values, setValues, initialValues })
 
   return (
     <DeviceDefinitionContext.Provider value={{ formik, allDefinitions }}>
       <Container fluid>
-        <InitialDefinitionSelector value={initialValues.id} setInitialValues={setInitialValues} />
+        <InitialDefinitionSelector
+          value={initialValues.id}
+          setInitialValues={setInitialValues}
+        />
         <Tabs defaultActiveKey='form' id='form-json-tabs' unmountOnExit>
           <Tab title='Form' eventKey='form'>
             <DeviceDefinitionForm />

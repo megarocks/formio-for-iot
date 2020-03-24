@@ -3,15 +3,20 @@ import CreatableSelect from 'react-select/creatable'
 import { get } from 'lodash/fp'
 
 import { DeviceDefinitionContext } from '../App.js'
-
-const getOptionLabel = option => option?.label
-const getOptionValue = option => option?.value
+import { getOptionLabel, getOptionValue } from '../utils'
 
 let formik = {
   setFieldValue: () => {},
 }
 
-const SelectField = ({ fieldName, placeHolder, label, options = [], onCreateOption, isMulti = true }) => {
+const SelectField = ({
+  fieldName,
+  placeHolder,
+  label,
+  options = [],
+  onCreateOption,
+  isMulti = true,
+}) => {
   const context = React.useContext(DeviceDefinitionContext)
   formik = context.formik
 
@@ -22,21 +27,23 @@ const SelectField = ({ fieldName, placeHolder, label, options = [], onCreateOpti
   // it can be array for multiselect, or string || number for simple select
   const value = useMemo(() => {
     if (Array.isArray(fieldValue)) {
-      return fieldValue.map(s => options.find(rE => getOptionValue(rE) === s))
+      return fieldValue.map((s) =>
+        options.find((rE) => getOptionValue(rE) === s)
+      )
     } else {
-      return options.find(rE => getOptionValue(rE) === fieldValue)
+      return options.find((rE) => getOptionValue(rE) === fieldValue)
     }
   }, [fieldValue, options])
 
   const onChange = useCallback(
-    updatedSelection => {
+    (updatedSelection) => {
       if (Array.isArray(updatedSelection)) {
         formik.setFieldValue(fieldName, updatedSelection.map(getOptionValue))
       } else {
         formik.setFieldValue(fieldName, getOptionValue(updatedSelection))
       }
     },
-    [fieldName],
+    [fieldName]
   )
 
   return useMemo(
@@ -58,7 +65,7 @@ const SelectField = ({ fieldName, placeHolder, label, options = [], onCreateOpti
       </div>
     ),
     // eslint-disable-next-line
-    [options.length, JSON.stringify(value)],
+    [options.length, JSON.stringify(value)]
   )
 }
 

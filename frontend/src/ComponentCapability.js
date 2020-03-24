@@ -15,7 +15,6 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
   const capabilityPath = `${componentName}.${capabilityName}`
 
   const attributeNames = get(`${capabilityPath}.attributeNames`, formik.values) || []
-  const commandNames = get(`${capabilityPath}.commandNames`, formik.values) || []
   const listsNames = get(`${capabilityPath}.listsNames`, formik.values) || []
 
   return (
@@ -42,7 +41,7 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
           </div>
         </Tab>
         <Tab title='Commands' eventKey='commands'>
-          <CommandsInputs listsNames={listsNames} commandNames={commandNames} capabilityPath={capabilityPath} />
+          <CommandsInputs capabilityPath={capabilityPath} />
         </Tab>
         <Tab title='Lists' eventKey='lists'>
           <ListsInputs capabilityPath={capabilityPath} listsNames={listsNames} />

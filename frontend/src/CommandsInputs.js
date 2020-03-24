@@ -1,53 +1,60 @@
 import React from 'react'
-import { get } from 'lodash/fp'
+import CreatableSelect from 'react-select/creatable'
+import { get, pick } from 'lodash/fp'
 
-import SelectField from './components/SelectField'
 import CommandArgumentInputs from './CommandArgumentInputs'
 import { DeviceDefinitionContext } from './App'
 import useSelectorOptions from './useSelectorOptions'
+import { createOption, getOptionValue } from './utils'
+import ArgumentsPanel from './ArgumentsPanel'
 
-const CommandsInputs = ({ capabilityPath, listsNames, commandNames }) => {
+function createOnChangeHandler({ fieldPath, values, setFieldValue }) {
+  return (currentlySelected) => {
+    const selectedOptions = (currentlySelected || []).map(getOptionValue)
+    let newFieldValue = get(fieldPath, values)
+    selectedOptions.forEach((option) => {
+      if (!(option in newFieldValue)) newFieldValue[option] = {}
+    })
+    newFieldValue = pick(selectedOptions, newFieldValue)
+    setFieldValue(fieldPath, newFieldValue)
+  }
+}
+
+const CommandsInputs = ({ capabilityPath }) => {
   const context = React.useContext(DeviceDefinitionContext)
   const formik = context.formik
 
   const { commandsOptions, createNewCommand } = useSelectorOptions()
 
+  const capability = get(capabilityPath, formik.values)
+  const commandNames = Object.keys(capability.commands || {})
+  const selectedCommandOptions = commandNames.map(createOption)
+  const onCommandsSelectorChange = createOnChangeHandler({
+    fieldPath: `${capabilityPath}.commands`,
+    values: formik.values,
+    setFieldValue: formik.setFieldValue,
+  })
+
+  const listsNames = Object.keys(capability.lists || {})
+
   return (
     <div className='border p-2 m-2'>
-      <SelectField
-        label='Commands'
+      <CreatableSelect
+        isMulti
+        closeMenuOnSelect
         options={commandsOptions}
-        fieldName={`${capabilityPath}.commandNames`}
         onCreateOption={createNewCommand}
+        value={selectedCommandOptions}
+        onChange={onCommandsSelectorChange}
       />
 
-      {commandNames.map(commandName => {
-        const capabilityCommandPath = `${capabilityPath}.commands.${commandName}`
-        const commandArguments = get(`${capabilityCommandPath}.arguments`, formik.values) || []
-        const argumentNames = commandArguments.map(a => a.name)
-
-        const createArgument = created => {
-          formik.setFieldValue(`${capabilityCommandPath}.argumentNames`, [...argumentNames, created])
-          formik.setFieldValue(`${capabilityCommandPath}.arguments`, [...commandArguments, { name: created }])
-        }
-        const options = argumentNames.map(a => ({ label: a, value: a }))
-
-        return (
-          <div className='m-2 p-2 border' key={`${capabilityCommandPath}.argumentNames`}>
-            <SelectField
-              options={options}
-              fieldName={`${capabilityCommandPath}.argumentNames`}
-              label={`${commandName} arguments`}
-              onCreateOption={createArgument}
-            />
-
-            {commandArguments.map((argument, idx) => {
-              const argumentPath = `${capabilityCommandPath}.arguments.${idx}`
-              return <CommandArgumentInputs key={argumentPath} argumentPath={argumentPath} listsNames={listsNames} />
-            })}
-          </div>
-        )
-      })}
+      {commandNames.map((commandName) => (
+        <ArgumentsPanel
+          listsNames={listsNames}
+          commandName={commandName}
+          argumentsPath={`${capabilityPath}.commands.${commandName}.arguments`}
+        />
+      ))}
     </div>
   )
 }
