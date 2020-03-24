@@ -11,10 +11,10 @@ export default () => {
     { label: '%', value: '%' },
   ])
   const createEnumOption = useCallback(
-    created => {
+    (created) => {
       setEnumOptions([...enumOptions, { label: created, value: created }])
     },
-    [enumOptions],
+    [enumOptions]
   )
 
   const [commandsOptions, setCommandsOptions] = useState([
@@ -33,10 +33,10 @@ export default () => {
     { label: 'off', value: 'off' },
   ])
   const createNewCommand = useCallback(
-    created => {
+    (created) => {
       setCommandsOptions([...commandsOptions, { label: created, value: created }])
     },
-    [commandsOptions],
+    [commandsOptions]
   )
 
   const [lists, setLists] = useState([
@@ -44,10 +44,10 @@ export default () => {
     { label: 'modes', value: 'modes' },
   ])
   const createNewList = useCallback(
-    created => {
+    (created) => {
       setLists([...lists, { label: created, value: created }])
     },
-    [lists],
+    [lists]
   )
 
   const [listItems, setListItems] = useState([
@@ -95,10 +95,10 @@ export default () => {
     { label: 'Auto Surround', value: 'Auto Surround' },
   ])
   const createNewListItem = useCallback(
-    created => {
+    (created) => {
       setListItems([...listItems, { label: created, value: created }])
     },
-    [listItems],
+    [listItems]
   )
 
   const [properties, setProperties] = useState([
@@ -107,10 +107,10 @@ export default () => {
     { label: 'supported', value: 'supported' },
   ])
   const createNewProperty = useCallback(
-    created => {
+    (created) => {
       setProperties([...properties, { label: created, value: created }])
     },
-    [properties],
+    [properties]
   )
 
   const [attributes, setAttributes] = useState([
@@ -122,17 +122,17 @@ export default () => {
     { label: 'surroundMode', value: 'surroundMode' },
   ])
   const createNewAttribute = useCallback(
-    created => {
+    (created) => {
       setAttributes([...attributes, { label: created, value: created }])
     },
-    [attributes],
+    [attributes]
   )
 
   const [types, setTypes] = useState([
     { label: 'Receiver', value: 'Receiver' },
     { label: 'Media Player', value: 'Media Player' },
   ])
-  const createNewType = created => {
+  const createNewType = (created) => {
     setTypes([...types, { label: created, value: created }])
   }
 
@@ -145,10 +145,10 @@ export default () => {
     { label: 'surroundMode', value: 'surroundMode' },
   ])
   const createNewCapability = useCallback(
-    created => {
+    (created) => {
       setCapabilities([...capabilities, { label: created, value: created }])
     },
-    [capabilities],
+    [capabilities]
   )
 
   const [components, setComponents] = useState([
@@ -156,21 +156,26 @@ export default () => {
     { label: 'zone 2', value: 'zone 2' },
   ])
   const createNewComponent = useCallback(
-    created => {
+    (created) => {
       setComponents([...components, { label: created, value: created }])
     },
-    [components],
+    [components]
   )
 
-  const [definitions, setDefinitions] = useState(definitionsArray.map(d => ({ label: d.friendlyName, value: d.id })))
-  const createNewDefinition = newDefinition => {
+  const [definitions, setDefinitions] = useState(
+    definitionsArray.map((d) => ({ label: d.friendlyName, value: d.id }))
+  )
+  const createNewDefinition = (newDefinition) => {
     const existingIndex = definitions.findIndex(({ value }) => value === newDefinition.id)
 
     if (existingIndex > -1) {
       definitions[existingIndex] = newDefinition
       setDefinitions(definitions)
     } else {
-      setDefinitions([...definitions, { label: newDefinition.friendlyName, value: newDefinition.id }])
+      setDefinitions([
+        ...definitions,
+        { label: newDefinition.friendlyName, value: newDefinition.id },
+      ])
     }
   }
 
@@ -193,6 +198,6 @@ export default () => {
     createNewCapability,
     components,
     createNewComponent,
-    definitions
+    definitions,
   }
 }

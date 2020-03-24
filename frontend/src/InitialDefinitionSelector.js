@@ -7,8 +7,8 @@ import { DeviceDefinitionContext } from './App'
 const InitialDefinitionSelector = ({ value, setInitialValues }) => {
   const { allDefinitions } = useContext(DeviceDefinitionContext)
   const { definitions } = useSelectorOptions()
-  const onChange = selected => {
-    const selectedDefinition = allDefinitions.find(d => d.id === selected.value)
+  const onChange = (selected) => {
+    const selectedDefinition = allDefinitions.find((d) => d.id === selected.value)
     setInitialValues(selectedDefinition)
   }
 
@@ -17,7 +17,7 @@ const InitialDefinitionSelector = ({ value, setInitialValues }) => {
       options={definitions}
       className='m-3'
       placeholder='Select device definition'
-      value={definitions.find(d => d.value === value)}
+      value={definitions.find((d) => d.value === value)}
       onChange={onChange}
     />
   )

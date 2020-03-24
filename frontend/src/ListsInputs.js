@@ -11,12 +11,7 @@ const ListsInputs = ({ capabilityPath }) => {
   const context = React.useContext(DeviceDefinitionContext)
   const formik = context.formik
 
-  const {
-    lists,
-    createNewList,
-    listItems,
-    createNewListItem,
-  } = useSelectorOptions()
+  const { lists, createNewList, listItems, createNewListItem } = useSelectorOptions()
 
   const listsPath = `${capabilityPath}.lists`
 

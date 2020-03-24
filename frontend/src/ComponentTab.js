@@ -17,7 +17,11 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
         onCreateOption={createNewCapability}
       />
 
-      <Tab.Container id='component-capabilities' defaultActiveKey={componentCapabilities[0] || ''} unmountOnExit>
+      <Tab.Container
+        id='component-capabilities'
+        defaultActiveKey={componentCapabilities[0] || ''}
+        unmountOnExit
+      >
         <Row>
           <Col sm={3}>
             <Nav variant='pills' className='flex-column'>

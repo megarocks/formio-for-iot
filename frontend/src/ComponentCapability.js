@@ -30,7 +30,11 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
               <SimpleField fieldName={`${capabilityPath}.id`} label={`ID:`} />
             </div>
             <div className='col-sm-6'>
-              <SimpleField fieldName={`${capabilityPath}.version`} label={`Version:`} type='number' />
+              <SimpleField
+                fieldName={`${capabilityPath}.version`}
+                label={`Version:`}
+                type='number'
+              />
             </div>
             <div className='col-sm-6'>
               <SimpleField fieldName={`${capabilityPath}.name`} label={`Name:`} />
@@ -47,7 +51,11 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
           <ListsInputs capabilityPath={capabilityPath} />
         </Tab>
         <Tab title='Attributes' eventKey='attributes'>
-          <AttributesInputs listsNames={listsNames} capabilityPath={capabilityPath} attributeNames={attributeNames} />
+          <AttributesInputs
+            listsNames={listsNames}
+            capabilityPath={capabilityPath}
+            attributeNames={attributeNames}
+          />
         </Tab>
       </Tabs>
     </div>

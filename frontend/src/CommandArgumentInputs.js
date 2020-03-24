@@ -47,7 +47,7 @@ const CommandArgumentInputs = ({ argumentPath, listsNames = [] }) => {
                 isMulti={false}
                 fieldName={`${argumentPath}.schema.list`}
                 label='List'
-                options={listsNames.map(l => ({ label: l, value: l }))}
+                options={listsNames.map((l) => ({ label: l, value: l }))}
               />
             )}
             <SelectField

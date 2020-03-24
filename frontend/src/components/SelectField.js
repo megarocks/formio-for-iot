@@ -27,9 +27,7 @@ const SelectField = ({
   // it can be array for multiselect, or string || number for simple select
   const value = useMemo(() => {
     if (Array.isArray(fieldValue)) {
-      return fieldValue.map((s) =>
-        options.find((rE) => getOptionValue(rE) === s)
-      )
+      return fieldValue.map((s) => options.find((rE) => getOptionValue(rE) === s))
     } else {
       return options.find((rE) => getOptionValue(rE) === fieldValue)
     }

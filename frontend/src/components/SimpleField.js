@@ -3,7 +3,13 @@ import { get } from 'lodash/fp'
 
 import { DeviceDefinitionContext } from '../App.js'
 
-const SimpleField = ({ fieldName, label = '', placeholder = '', type = 'text', inputProps = {} }) => {
+const SimpleField = ({
+  fieldName,
+  label = '',
+  placeholder = '',
+  type = 'text',
+  inputProps = {},
+}) => {
   const context = React.useContext(DeviceDefinitionContext)
   const formik = context.formik
 

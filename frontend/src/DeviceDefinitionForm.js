@@ -31,10 +31,20 @@ const DeviceDefinitionForm = () => {
           <SimpleField fieldName='location' label='Location' />
         </div>
         <div className='col-sm-6'>
-          <SelectField fieldName='type' options={types} label='Type' onCreateOption={createNewType} />
+          <SelectField
+            fieldName='type'
+            options={types}
+            label='Type'
+            onCreateOption={createNewType}
+          />
         </div>
         <div className='col-sm-6'>
-          <SelectField fieldName='components' options={components} label='Components' onCreateOption={createNewComponent} />
+          <SelectField
+            fieldName='components'
+            options={components}
+            label='Components'
+            onCreateOption={createNewComponent}
+          />
         </div>
       </div>
 
@@ -43,7 +53,10 @@ const DeviceDefinitionForm = () => {
           <Tab title={componentName} key={componentName} eventKey={componentName}>
             <ComponentTab
               componentName={componentName}
-              componentCapabilities={get(['values', 'supportedCapabilities', componentName], formik)}
+              componentCapabilities={get(
+                ['values', 'supportedCapabilities', componentName],
+                formik
+              )}
             />
           </Tab>
         ))}

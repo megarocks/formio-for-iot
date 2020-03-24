@@ -10,9 +10,7 @@ const ArgumentsPanel = ({ commandName, argumentsPath, listsNames }) => {
   const formik = context.formik
 
   const args = get(argumentsPath, formik.values) || []
-  const [argumentOptions, setArgumentOptions] = useState(
-    args.map((a) => createOption(a.name))
-  )
+  const [argumentOptions, setArgumentOptions] = useState(args.map((a) => createOption(a.name)))
 
   const onArgumentsSelection = (currentlySelected) => {
     const selectedOptions = (currentlySelected || []).map(getOptionValue)

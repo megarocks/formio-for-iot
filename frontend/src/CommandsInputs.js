@@ -13,7 +13,7 @@ const CommandsInputs = ({ capabilityPath }) => {
 
   const { commandsOptions, createNewCommand } = useSelectorOptions()
 
-  const capability = get(capabilityPath, formik.values)
+  const capability = get(capabilityPath, formik.values) || {}
   const commandNames = Object.keys(capability.commands || {})
   const selectedCommandOptions = commandNames.map(createOption)
   const onCommandsSelectorChange = createOnChangeHandler({
