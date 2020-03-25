@@ -18,7 +18,7 @@ const DeviceDefinitionForm = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className='row'>
-        <div className='col-sm'>
+        <div className='col-sm-6'>
           <SimpleField fieldName='id' label='Device Definition ID' />
         </div>
         <div className='col-sm-6'>
@@ -61,6 +61,10 @@ const DeviceDefinitionForm = () => {
           </Tab>
         ))}
       </Tabs>
+
+      <div className='d-flex justify-content-end m-3'>
+        <input type='submit' className='btn btn-success btn-lg' />
+      </div>
     </form>
   )
 }

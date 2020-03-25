@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import { Tabs, Tab, Container } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
+import { ToastContainer, toast } from 'react-toastify'
 
 import DeviceDefinitionForm from './DeviceDefinitionForm'
 import InitialDefinitionSelector from './InitialDefinitionSelector'
@@ -10,7 +11,7 @@ import useApiResource from './useApiResource'
 export const DeviceDefinitionContext = React.createContext()
 
 function App() {
-  const { data: definitions = [], fetch, save } = useApiResource('definitions')
+  const { data: definitions = [], fetch, create, update } = useApiResource('definitions')
 
   const [initialValues, setInitialValues] = useState()
 
@@ -27,12 +28,25 @@ function App() {
 
   const formik = useFormik({
     initialValues,
-    onSubmit: async (values) => {
-      await save(values)
-      await fetch()
-    },
+    onSubmit,
     enableReinitialize: true,
   })
+
+  const isUpdate = definitions.find((d) => d.id === formik.values?.id)
+
+  async function onSubmit(values) {
+    try {
+      if (isUpdate) {
+        await update(values)
+      } else {
+        await create(values)
+      }
+      await fetch()
+      toast.success(`Definition #${values.id} ${isUpdate ? 'updated' : 'created'}`)
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
 
   return (
     <DeviceDefinitionContext.Provider value={{ formik }}>
@@ -50,6 +64,7 @@ function App() {
             <ReactJson src={formik.values} collapsed />
           </Tab>
         </Tabs>
+        <ToastContainer />
       </Container>
     </DeviceDefinitionContext.Provider>
   )

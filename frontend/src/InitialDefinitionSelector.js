@@ -10,13 +10,19 @@ const InitialDefinitionSelector = ({ value, setInitialValues, definitions = [] }
   const definitionsOptions = definitions.map((d) => ({ label: d.friendlyName, value: d.id }))
 
   return (
-    <ReactSelect
-      options={definitionsOptions}
-      className='m-3'
-      placeholder='Select device definition'
-      value={definitionsOptions.find((d) => d.value === value)}
-      onChange={onChange}
-    />
+    <div className='row mt-3'>
+      <div className='col-sm'>
+        <div className='form-group'>
+          <label>Initial values:</label>
+          <ReactSelect
+            options={definitionsOptions}
+            placeholder='Select device definition'
+            value={definitionsOptions.find((d) => d.value === value)}
+            onChange={onChange}
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 

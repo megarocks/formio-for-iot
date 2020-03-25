@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 import useApiResource from './useApiResource'
 import { createOption } from './utils'
@@ -41,8 +42,14 @@ function useResourceOptions(resource) {
   const { data = [], create, fetch } = apiResource
   const options = data.map(({ id }) => createOption(id))
   const createNew = async (created) => {
-    await create({ id: created })
-    await fetch()
+    try {
+      await create({ id: created })
+      await fetch()
+      toast.success(`${resource}: ${created} was created`)
+    } catch (e) {
+      toast.error(`Error while creating ${resource} ${created}`)
+      toast.error(e.message)
+    }
   }
   useEffect(() => {
     fetch()

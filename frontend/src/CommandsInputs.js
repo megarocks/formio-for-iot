@@ -37,6 +37,7 @@ const CommandsInputs = ({ capabilityPath }) => {
 
       {commandNames.map((commandName) => (
         <ArgumentsPanel
+          key={commandName + 'args-panel'}
           listsNames={listsNames}
           commandName={commandName}
           argumentsPath={`${capabilityPath}.commands.${commandName}.arguments`}
