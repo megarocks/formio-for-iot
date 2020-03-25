@@ -1,23 +1,20 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import ReactSelect from 'react-select'
 
-import useSelectorOptions from './useSelectorOptions'
-import { DeviceDefinitionContext } from './App'
-
-const InitialDefinitionSelector = ({ value, setInitialValues }) => {
-  const { allDefinitions } = useContext(DeviceDefinitionContext)
-  const { definitions } = useSelectorOptions()
+const InitialDefinitionSelector = ({ value, setInitialValues, definitions = [] }) => {
   const onChange = (selected) => {
-    const selectedDefinition = allDefinitions.find((d) => d.id === selected.value)
+    const selectedDefinition = definitions.find((d) => d.id === selected.value)
     setInitialValues(selectedDefinition)
   }
 
+  const definitionsOptions = definitions.map((d) => ({ label: d.friendlyName, value: d.id }))
+
   return (
     <ReactSelect
-      options={definitions}
+      options={definitionsOptions}
       className='m-3'
       placeholder='Select device definition'
-      value={definitions.find((d) => d.value === value)}
+      value={definitionsOptions.find((d) => d.value === value)}
       onChange={onChange}
     />
   )
