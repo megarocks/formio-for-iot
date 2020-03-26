@@ -16,8 +16,8 @@ function App() {
 
   return (
     <Container fluid>
-      <Navbar>
-        <Nav activeKey={location.href} onSelect={onNavChange}>
+      <Navbar bg='light' className='m-3'>
+        <Nav activeKey={location.pathname} onSelect={onNavChange}>
           <Nav.Item>
             <Nav.Link eventKey='/device-library'>Device Library</Nav.Link>
           </Nav.Item>
