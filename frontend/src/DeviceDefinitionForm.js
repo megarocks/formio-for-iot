@@ -7,7 +7,7 @@ import { get } from 'lodash/fp'
 import { DeviceDefinitionContext } from './App'
 import useSelectorOptions from './useSelectorOptions'
 
-const DeviceDefinitionForm = () => {
+const DeviceDefinitionForm = ({ isForLocalization = true }) => {
   const context = React.useContext(DeviceDefinitionContext)
   const formik = context.formik
 
@@ -16,19 +16,19 @@ const DeviceDefinitionForm = () => {
   const componentNames = get('components', formik.values) || []
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className='mt-3'>
       <div className='row'>
         <div className='col-sm-6'>
-          <SimpleField fieldName='id' label='Device Definition ID' />
+          <SimpleField fieldName='name' label='Device Definition Name' />
         </div>
         <div className='col-sm-6'>
-          <SimpleField fieldName='name' label='Device Definition Name' />
+          <SimpleField fieldName='id' label='Device Definition ID' />
         </div>
         <div className='col-sm-6'>
           <SimpleField fieldName='friendlyName' label='Friendly Name' />
         </div>
         <div className='col-sm-6'>
-          <SimpleField fieldName='location' label='Location' />
+          {isForLocalization && <SimpleField fieldName='location' label='Location' />}
         </div>
         <div className='col-sm-6'>
           <SelectField
@@ -48,19 +48,21 @@ const DeviceDefinitionForm = () => {
         </div>
       </div>
 
-      <Tabs defaultActiveKey={componentNames[0]} id='components-tabs' unmountOnExit>
-        {componentNames.map((componentName) => (
-          <Tab title={componentName} key={componentName} eventKey={componentName}>
-            <ComponentTab
-              componentName={componentName}
-              componentCapabilities={get(
-                ['values', 'supportedCapabilities', componentName],
-                formik
-              )}
-            />
-          </Tab>
-        ))}
-      </Tabs>
+      {isForLocalization && (
+        <Tabs defaultActiveKey={componentNames[0]} id='components-tabs' unmountOnExit>
+          {componentNames.map((componentName) => (
+            <Tab title={componentName} key={componentName} eventKey={componentName}>
+              <ComponentTab
+                componentName={componentName}
+                componentCapabilities={get(
+                  ['values', 'supportedCapabilities', componentName],
+                  formik
+                )}
+              />
+            </Tab>
+          ))}
+        </Tabs>
+      )}
 
       <div className='d-flex justify-content-end m-3'>
         <input type='submit' className='btn btn-success btn-lg' />
