@@ -11,6 +11,6 @@
     "nodemon": "^2.0.2"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon --ignore 'db/**' index.js"
   }
 }

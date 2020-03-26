@@ -1,50 +1,30 @@
 const express = require('express')
-const { omit } = require('lodash/fp')
 
-const resources = [
-  'definitions',
-  'components',
-  'types',
-  'capabilities',
-  'attributes',
-  'properties',
-  'lists',
-  'listItems',
-  'commands',
-  'enums',
-]
+const createCollection = require('./db/createWrapper')
 
-function createRouter({ db, resourceName }) {
+async function createRouter({ resourceName }) {
   const router = express.Router()
 
-  const collection = db.getCollection(resourceName)
+  const collection = await createCollection(resourceName)
 
-  router.get('/', (req, res) => {
-    let allItems = collection.find({})
-    allItems = allItems.map((item) => omit(['$loki', 'meta'], item))
+  router.get('/', async (req, res) => {
+    const allItems = await collection.getAll()
     res.json(allItems)
   })
-  router.post('/', (req, res) => {
-    collection.insertOne(req.body)
-    res.status(201).end()
+  router.post('/', async (req, res) => {
+    const result = await collection.save(req.body)
+    res.status(result ? 201 : 500).json(result)
   })
-  router.put('/', (req, res) => {
-    collection.updateWhere(
-      (item) => item.id === req.body.id,
-      (item) => ({ ...item, ...req.body })
-    )
-    res.end()
+  router.put('/', async (req, res) => {
+    const result = await collection.save(req.body)
+    res.status(result ? 200 : 500).json(result)
   })
-  router.delete('/:id', (req, res) => {
-    const byField = req.query.byField || 'id'
-    collection.removeWhere((item) => item[byField] === req.params.id)
-    res.end()
+  router.delete('/:id', async (req, res) => {
+    const result = await collection.delete(req.params.id)
+    res.status(result ? 200 : 500).json(result)
   })
 
   return router
 }
 
-module.exports = {
-  createRouter,
-  resources,
-}
+module.exports = createRouter

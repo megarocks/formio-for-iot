@@ -11,7 +11,7 @@ import useApiResource from './useApiResource'
 export const DeviceDefinitionContext = React.createContext()
 
 function App() {
-  const { data: definitions = [], fetch, create, update } = useApiResource('definitions')
+  const { data: definitions = [], fetch, create, update } = useApiResource('device_library')
 
   const [initialValues, setInitialValues] = useState()
 
