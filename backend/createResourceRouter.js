@@ -5,6 +5,7 @@ const createCollection = require('./db/createWrapper')
 async function createRouter({ resourceName }) {
   const router = express.Router()
 
+  // get access to resource collection
   const collection = await createCollection(resourceName)
 
   router.get('/', async (req, res) => {

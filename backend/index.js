@@ -25,6 +25,7 @@ async function init() {
   app.use(cors())
   app.use(express.json())
 
+  // create api route for each resource listed at array
   for (const resourceName of resources) {
     app.use(`/api/${resourceName}`, await createRouter({ resourceName }))
   }

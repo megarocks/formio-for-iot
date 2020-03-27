@@ -4,6 +4,7 @@ const path = require('path')
 module.exports = async (directory) => {
   const dirPath = path.join(__dirname, directory)
 
+  // create collection directory if it's not exist yet
   try {
     await fs.access(dirPath)
   } catch (e) {
