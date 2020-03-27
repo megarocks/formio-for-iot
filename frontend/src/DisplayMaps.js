@@ -8,6 +8,7 @@ import ReactSelect from 'react-select'
 import DisplayMapsSortableList from './DisplayMapsSortableList'
 
 const DisplayMaps = ({ capabilityPath }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 

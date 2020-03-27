@@ -7,7 +7,14 @@ import { get } from 'lodash/fp'
 import { Context } from './App'
 import useSelectorOptions from './useSelectorOptions'
 
+// component consumes parent context to get access to form management logic
+// also it uses custom hook to get access to various selector options and
+// functions to call when new created
+
+// js destructuring is used to get props values, also to assign default value
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 const DeviceDefinitionForm = ({ isForLocalization = true }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 

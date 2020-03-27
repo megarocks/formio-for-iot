@@ -4,6 +4,9 @@ import { toast } from 'react-toastify'
 import useApiResource from './useApiResource'
 import { createOption } from './utils'
 
+// this custom hook organize all selector options
+// it creates api resources and exports options arrays, with function to call when creating new
+
 export default () => {
   const componentsResourceOptions = useResourceOptions('components')
   const typesResourceOptions = useResourceOptions('types')

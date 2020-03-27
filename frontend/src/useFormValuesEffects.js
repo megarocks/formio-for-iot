@@ -7,6 +7,8 @@ export default ({ values, setValues, initialValues }) => {
   const [postfix] = useState(shortid.generate())
   const stringInitial = JSON.stringify(initialValues)
 
+  // this effect will run when initial values changes
+  // it will add add random id to id field, it its not there yet
   useEffect(() => {
     if (initialValues) {
       const { id = '' } = initialValues

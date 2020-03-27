@@ -8,6 +8,7 @@ import { createFieldPath, createOnChangeHandler, createOption } from './utils'
 import { Context } from './App'
 
 const ListsInputs = ({ capabilityPath }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 

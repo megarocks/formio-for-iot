@@ -6,6 +6,7 @@ import { Context } from './App'
 import useSelectorOptions from './useSelectorOptions'
 
 const DisplayMapsSortableList = ({ displayMapsPath }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 

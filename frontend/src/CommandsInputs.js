@@ -8,6 +8,7 @@ import { createOption, createOnChangeHandler, createFieldPath } from './utils'
 import ArgumentsPanel from './ArgumentsPanel'
 
 const CommandsInputs = ({ capabilityPath }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 

@@ -33,6 +33,7 @@ const SelectField = ({
     }
   }, [JSON.stringify(fieldValue), options])
 
+  // useCallback is used for optimization
   const onChange = useCallback(
     (updatedSelection) => {
       if (Array.isArray(updatedSelection)) {
@@ -44,6 +45,8 @@ const SelectField = ({
     [fieldName]
   )
 
+  // useMemo is used to avoid re-rendering of underneath component three
+  // see dependencies array to know when it will be re-rendered
   return useMemo(
     () => (
       <div className='form-group'>

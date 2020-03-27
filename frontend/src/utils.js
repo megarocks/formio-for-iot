@@ -5,6 +5,9 @@ export const createOption = (item) => ({ label: item, value: item })
 export const getOptionLabel = (option) => option?.label
 export const getOptionValue = (option) => option?.value
 
+// some selectors share this logic so it is extracted here
+// this function creates functions which creates or deletes object keys
+// when selector is intended to control object keys (not values)
 export function createOnChangeHandler({
   fieldPath,
   values,

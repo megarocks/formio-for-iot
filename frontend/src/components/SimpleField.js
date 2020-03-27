@@ -13,6 +13,8 @@ const SimpleField = ({
   const context = React.useContext(Context)
   const formik = context.formik
 
+  // this trick is needed to give capability to put 0 into input
+  // otherwise js will treat 0 as absence of value
   let value = get(`values.${fieldName}`, formik)
   if (value === 0) value = '0'
 

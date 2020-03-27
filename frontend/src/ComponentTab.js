@@ -17,6 +17,38 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
     fetch()
   }, [])
 
+  function onCapabilitySelectorChange(currentSelection, { action, option, removedValue }) {
+    //identify what changed
+    //when something deleted - remove from supported capabilities and from component
+    let newValues = { ...formik.values }
+    if (action === 'remove-value') {
+      const componentArray = get(['supportedCapabilities', componentName], newValues) || []
+      const withoutRemovedCapability = componentArray.filter((cap) => cap !== removedValue.value)
+      newValues = set(['supportedCapabilities', componentName], withoutRemovedCapability, newValues)
+      newValues = unset([componentName, removedValue.value], newValues)
+    }
+    //when something added - add item to supported capabilities and whole object to component
+    if (action === 'select-option') {
+      const componentArray = get(['supportedCapabilities', componentName], newValues) || []
+      componentArray.push(option.value)
+      newValues = set(['supportedCapabilities', componentName], componentArray, newValues)
+      // find data for selected capability and inject into form value
+      const selectedCapabilityData = capabilities.find((c) => c.id === option.value)
+      newValues = set([componentName, option.value], selectedCapabilityData, newValues)
+    }
+    formik.setValues(newValues)
+  }
+
+  function onCapabilitySelectorFiltering({ label, value, data: { tags = [] } = {} }, filterString) {
+    if (
+      label.startsWith(filterString) ||
+      value.startsWith(filterString) ||
+      tags.some((tag) => tag.startsWith(filterString))
+    )
+      return true
+    else return false
+  }
+
   return (
     <div>
       <div>
@@ -26,42 +58,8 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
           options={capabilities.map((c) => ({ ...createOption(c.id), ...c }))}
           placeholder='Capabilities'
           value={componentCapabilities.map(createOption)}
-          onChange={(currentSelection, { action, option, removedValue }) => {
-            //identify what changed
-            //when something deleted - remove from supported capabilities and from component
-            let newValues = { ...formik.values }
-            if (action === 'remove-value') {
-              const componentArray = get(['supportedCapabilities', componentName], newValues) || []
-              const withoutRemovedCapability = componentArray.filter(
-                (cap) => cap !== removedValue.value
-              )
-              newValues = set(
-                ['supportedCapabilities', componentName],
-                withoutRemovedCapability,
-                newValues
-              )
-              newValues = unset([componentName, removedValue.value], newValues)
-            }
-            //when something added - add item to supported capabilities and whole object to component
-            if (action === 'select-option') {
-              const componentArray = get(['supportedCapabilities', componentName], newValues) || []
-              componentArray.push(option.value)
-              newValues = set(['supportedCapabilities', componentName], componentArray, newValues)
-              // find data for selected capability and inject into form value
-              const selectedCapabilityData = capabilities.find((c) => c.id === option.value)
-              newValues = set([componentName, option.value], selectedCapabilityData, newValues)
-            }
-            formik.setValues(newValues)
-          }}
-          filterOption={({ label, value, data: { tags = [] } = {} }, filterString) => {
-            if (
-              label.startsWith(filterString) ||
-              value.startsWith(filterString) ||
-              tags.some((tag) => tag.startsWith(filterString))
-            )
-              return true
-            else return false
-          }}
+          onChange={onCapabilitySelectorChange}
+          filterOption={onCapabilitySelectorFiltering}
         />
       </div>
 

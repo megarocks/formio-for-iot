@@ -6,6 +6,7 @@ import CommandArgumentInputs from './CommandArgumentInputs'
 import { Context } from './App'
 
 const ArgumentsPanel = ({ commandName, argumentsPath, listsNames }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 

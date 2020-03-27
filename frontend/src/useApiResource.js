@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { useState } from 'react'
 
+// this custom hooks introduce logic for communication with backend app
+
 const transport = axios.create({
   baseURL: 'http://localhost:3001/api',
 })

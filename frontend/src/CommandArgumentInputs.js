@@ -8,6 +8,7 @@ import SimpleField from './components/SimpleField'
 import SelectField from './components/SelectField'
 
 const CommandArgumentInputs = ({ argumentPath, listsNames = [] }) => {
+  // consume context
   const context = React.useContext(Context)
   const formik = context.formik
 
