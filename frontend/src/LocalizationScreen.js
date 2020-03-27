@@ -3,7 +3,7 @@ import useApiResource from './useApiResource'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import { DeviceDefinitionContext } from './App'
-import { Container, Tab, Tabs } from 'react-bootstrap'
+import { Container, Tab, Tabs, Alert } from 'react-bootstrap'
 import InitialDefinitionSelector from './InitialDefinitionSelector'
 import DeviceDefinitionForm from './DeviceDefinitionForm'
 import ReactJson from 'react-json-view'
@@ -95,14 +95,19 @@ const LocalizationScreen = () => {
             definitions={templateSelectorOptions}
             label='Load template or previously localized device'
           />
-          <Tabs defaultActiveKey='form' id='form-json-tabs' unmountOnExit>
-            <Tab title='Form' eventKey='form'>
-              <DeviceDefinitionForm />
-            </Tab>
-            <Tab title='JSON' eventKey='json'>
-              <ReactJson src={formik.values} collapsed />
-            </Tab>
-          </Tabs>
+
+          {initialValues ? (
+            <Tabs defaultActiveKey='form' id='form-json-tabs' unmountOnExit>
+              <Tab title='Form' eventKey='form'>
+                <DeviceDefinitionForm />
+              </Tab>
+              <Tab title='JSON' eventKey='json'>
+                <ReactJson src={formik.values} collapsed />
+              </Tab>
+            </Tabs>
+          ) : (
+            <Alert variant='info'>Select template to see form</Alert>
+          )}
         </Container>
       </DeviceDefinitionContext.Provider>
     </>

@@ -34,9 +34,11 @@ const DeviceDefinitionForm = ({ isForLocalization = true }) => {
         <div className='col-sm-6'>
           <SimpleField fieldName='friendlyName' label='Friendly Name' />
         </div>
-        <div className='col-sm-6'>
-          {isForLocalization && <SimpleField fieldName='location' label='Location' />}
-        </div>
+        {isForLocalization && (
+          <div className='col-sm-6'>
+            <SimpleField fieldName='location' label='Location' />
+          </div>
+        )}
         <div className='col-sm-6'>
           <SelectField
             fieldName='type'
