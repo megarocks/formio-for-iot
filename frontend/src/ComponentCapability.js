@@ -7,6 +7,7 @@ import CommandsInputs from './CommandsInputs'
 import ListsInputs from './ListsInputs'
 import AttributesInputs from './AttributesInputs'
 import { DeviceDefinitionContext } from './App'
+import DisplayMaps from './DisplayMaps'
 
 const ComponentCapability = ({ componentName, capabilityName }) => {
   const context = React.useContext(DeviceDefinitionContext)
@@ -56,6 +57,9 @@ const ComponentCapability = ({ componentName, capabilityName }) => {
             capabilityPath={capabilityPath}
             attributeNames={attributeNames}
           />
+        </Tab>
+        <Tab title='Display Maps' eventKey='display-maps'>
+          <DisplayMaps capabilityPath={capabilityPath} />
         </Tab>
       </Tabs>
     </div>
