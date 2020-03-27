@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import useApiResource from './useApiResource'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import { Container, Tab, Tabs, Alert } from 'react-bootstrap'
 import InitialDefinitionSelector from './InitialDefinitionSelector'
 import DeviceDefinitionForm from './DeviceDefinitionForm'
@@ -87,7 +87,7 @@ const LocalizationScreen = () => {
 
   return (
     <>
-      <DeviceDefinitionContext.Provider value={{ formik }}>
+      <Context.Provider value={{ formik }}>
         <Container fluid>
           <InitialDefinitionSelector
             value={initialValues?.id}
@@ -109,7 +109,7 @@ const LocalizationScreen = () => {
             <Alert variant='info'>Select template to see form</Alert>
           )}
         </Container>
-      </DeviceDefinitionContext.Provider>
+      </Context.Provider>
     </>
   )
 }

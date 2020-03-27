@@ -1,17 +1,17 @@
 import React from 'react'
 
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import { get, max } from 'lodash/fp'
-import { createOnChangeHandler, createOption } from './utils'
+import { createFieldPath, createOnChangeHandler, createOption } from './utils'
 import useSelectorOptions from './useSelectorOptions'
 import ReactSelect from 'react-select'
 import DisplayMapsSortableList from './DisplayMapsSortableList'
 
 const DisplayMaps = ({ capabilityPath }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
-  const displayMapsPath = `${capabilityPath}.displayMaps`
+  const displayMapsPath = createFieldPath([capabilityPath, 'displayMaps'])
   const displayMapsValue = get(displayMapsPath, formik.values) || {}
 
   const { listItems } = useSelectorOptions()

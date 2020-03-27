@@ -1,7 +1,7 @@
 import React from 'react'
 import { get } from 'lodash/fp'
 
-import { DeviceDefinitionContext } from '../App.js'
+import { Context } from '../App.js'
 
 const SimpleField = ({
   fieldName,
@@ -10,8 +10,11 @@ const SimpleField = ({
   type = 'text',
   inputProps = {},
 }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
+
+  let value = get(`values.${fieldName}`, formik)
+  if (value === 0) value = '0'
 
   return (
     <div className='form-group'>
@@ -23,7 +26,7 @@ const SimpleField = ({
         placeholder={placeholder}
         name={fieldName}
         onChange={formik.handleChange}
-        value={get(`values.${fieldName}`, formik) || ''}
+        value={value || ''}
         {...inputProps}
       />
     </div>

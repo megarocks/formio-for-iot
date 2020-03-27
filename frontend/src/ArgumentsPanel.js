@@ -3,10 +3,10 @@ import { get } from 'lodash/fp'
 import { createOption, getOptionValue } from './utils'
 import CreatableSelect from 'react-select/creatable'
 import CommandArgumentInputs from './CommandArgumentInputs'
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 
 const ArgumentsPanel = ({ commandName, argumentsPath, listsNames }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const args = get(argumentsPath, formik.values) || []

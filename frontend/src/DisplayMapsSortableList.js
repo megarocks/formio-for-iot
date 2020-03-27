@@ -2,11 +2,11 @@ import React from 'react'
 import SelectField from './components/SelectField'
 import SimpleField from './components/SimpleField'
 import { get } from 'lodash/fp'
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import useSelectorOptions from './useSelectorOptions'
 
 const DisplayMapsSortableList = ({ displayMapsPath }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const { listItems } = useSelectorOptions()

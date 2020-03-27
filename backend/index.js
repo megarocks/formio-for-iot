@@ -13,7 +13,8 @@ const resources = [
   'listItems',
   'commands',
   'enums',
-  'supported_models'
+  'supported_models',
+  'capability-tags'
 ]
 
 const createRouter = require('./createResourceRouter')

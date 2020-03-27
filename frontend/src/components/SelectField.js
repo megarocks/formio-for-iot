@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import CreatableSelect from 'react-select/creatable'
 import { get } from 'lodash/fp'
 
-import { DeviceDefinitionContext } from '../App.js'
+import { Context } from '../App.js'
 import { getOptionLabel, getOptionValue } from '../utils'
 
 let formik = {
@@ -17,7 +17,7 @@ const SelectField = ({
   onCreateOption,
   isMulti = true,
 }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   formik = context.formik
 
   // raw value stored at form state
@@ -31,7 +31,7 @@ const SelectField = ({
     } else {
       return options.find((rE) => getOptionValue(rE) === fieldValue)
     }
-  }, [fieldValue, options])
+  }, [JSON.stringify(fieldValue), options])
 
   const onChange = useCallback(
     (updatedSelection) => {

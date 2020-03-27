@@ -4,11 +4,11 @@ import SelectField from './components/SelectField'
 import { Tab, Tabs } from 'react-bootstrap'
 import ComponentTab from './ComponentTab'
 import { get } from 'lodash/fp'
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import useSelectorOptions from './useSelectorOptions'
 
 const DeviceDefinitionForm = ({ isForLocalization = true }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const {

@@ -1,14 +1,14 @@
 import React from 'react'
 import { get } from 'lodash/fp'
 
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import { schemaTypeOptions } from './constants'
 import useSelectorOptions from './useSelectorOptions'
 import SimpleField from './components/SimpleField'
 import SelectField from './components/SelectField'
 
 const CommandArgumentInputs = ({ argumentPath, listsNames = [] }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const { enumOptions, createEnumOption } = useSelectorOptions()

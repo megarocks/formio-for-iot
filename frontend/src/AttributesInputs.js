@@ -2,14 +2,14 @@ import React from 'react'
 import SelectField from './components/SelectField'
 import { get } from 'lodash/fp'
 import SimpleField from './components/SimpleField'
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import { schemaTypeOptions } from './constants'
 import useSelectorOptions from './useSelectorOptions'
 import CreatableSelect from 'react-select/creatable/dist/react-select.esm'
-import { createOnChangeHandler, createOption } from './utils'
+import { createFieldPath, createOnChangeHandler, createOption } from './utils'
 
 const AttributesInputs = ({ capabilityPath }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const {
@@ -20,10 +20,10 @@ const AttributesInputs = ({ capabilityPath }) => {
     createNewAttribute,
   } = useSelectorOptions()
 
-  const capabilityLists = get(`${capabilityPath}.lists`, formik.values) || {}
+  const capabilityLists = get(createFieldPath([capabilityPath, 'lists']), formik.values) || {}
   const listsNames = Object.keys(capabilityLists)
 
-  const attributesPath = `${capabilityPath}.attributes`
+  const attributesPath = createFieldPath([capabilityPath, 'attributes'])
   const capabilityAttributes = get(attributesPath, formik.values) || {}
   const attributeNames = Object.keys(capabilityAttributes)
 
@@ -47,9 +47,13 @@ const AttributesInputs = ({ capabilityPath }) => {
       />
 
       {attributeNames.map((attributeName) => {
-        const currentAttributeSchemaPath = `${attributesPath}.${attributeName}.schema`
+        const currentAttributeSchemaPath = createFieldPath([
+          attributesPath,
+          attributeName,
+          'schema',
+        ])
 
-        const propertiesPath = `${currentAttributeSchemaPath}.properties`
+        const propertiesPath = createFieldPath([currentAttributeSchemaPath, 'properties'])
         const attributeProperties = get(propertiesPath, formik.values) || {}
         const propertyNames = Object.keys(attributeProperties)
 
@@ -65,16 +69,19 @@ const AttributesInputs = ({ capabilityPath }) => {
 
             <SelectField
               isMulti={false}
-              fieldName={`${currentAttributeSchemaPath}.type`}
+              fieldName={createFieldPath([currentAttributeSchemaPath, 'type'])}
               label='Schema Type'
               options={schemaTypeOptions}
             />
 
             <SimpleField
-              fieldName={`${currentAttributeSchemaPath}.additionalProperties`}
+              fieldName={createFieldPath([currentAttributeSchemaPath, 'additionalProperties'])}
               type='checkbox'
               inputProps={{
-                checked: get(`${currentAttributeSchemaPath}.additionalProperties`, formik.values),
+                checked: get(
+                  createFieldPath([currentAttributeSchemaPath, 'additionalProperties']),
+                  formik.values
+                ),
               }}
               label='Additional Properties'
             />
@@ -90,21 +97,28 @@ const AttributesInputs = ({ capabilityPath }) => {
             />
 
             <SelectField
-              fieldName={`${currentAttributeSchemaPath}.required`}
+              fieldName={createFieldPath([currentAttributeSchemaPath, 'required'])}
               label='Required Properties'
               options={propertyNames.map((p) => ({ label: p, value: p }))}
             />
 
             {propertyNames.map((propertyName) => {
-              const propertyPath = `${currentAttributeSchemaPath}.properties.${propertyName}`
-              const propertyType = get(`${propertyPath}.type`, formik.values)
+              const propertyPath = createFieldPath([
+                currentAttributeSchemaPath,
+                'properties',
+                propertyName,
+              ])
+              const propertyType = get(createFieldPath([propertyPath, 'type']), formik.values)
               return (
                 <div className='m-2 p-2 border' key={propertyPath}>
                   <h6>Property {propertyName}:</h6>
-                  <SimpleField fieldName={`${propertyPath}.title`} label={`Title:`} />
+                  <SimpleField
+                    fieldName={createFieldPath([propertyPath, 'title'])}
+                    label={`Title:`}
+                  />
                   <SelectField
                     isMulti={false}
-                    fieldName={`${propertyPath}.type`}
+                    fieldName={createFieldPath([propertyPath, 'type'])}
                     label='Type'
                     options={schemaTypeOptions}
                   />
@@ -112,14 +126,14 @@ const AttributesInputs = ({ capabilityPath }) => {
                   {propertyType === 'string' && (
                     <>
                       <SelectField
-                        fieldName={`${propertyPath}.enum`}
+                        fieldName={createFieldPath([propertyPath, 'enum'])}
                         label='Enum'
                         options={enumOptions}
                       />
                       {!!listsNames.length && (
                         <SelectField
                           isMulti={false}
-                          fieldName={`${propertyPath}.list`}
+                          fieldName={createFieldPath([propertyPath, 'list'])}
                           label='List'
                           options={listsNames.map((l) => ({ label: l, value: l }))}
                         />
@@ -130,12 +144,12 @@ const AttributesInputs = ({ capabilityPath }) => {
                   {propertyType === 'integer' && (
                     <>
                       <SimpleField
-                        fieldName={`${propertyPath}.minimum`}
+                        fieldName={createFieldPath([propertyPath, 'minimum'])}
                         label='Minimum'
                         type='number'
                       />
                       <SimpleField
-                        fieldName={`${propertyPath}.maximum`}
+                        fieldName={createFieldPath([propertyPath, 'maximum'])}
                         label='Maximum'
                         type='number'
                       />
@@ -143,7 +157,7 @@ const AttributesInputs = ({ capabilityPath }) => {
                   )}
 
                   <SimpleField
-                    fieldName={`${propertyPath}.default`}
+                    fieldName={createFieldPath([propertyPath, 'default'])}
                     label={`Default:`}
                     type={propertyType === 'string' ? 'text' : 'number'}
                   />

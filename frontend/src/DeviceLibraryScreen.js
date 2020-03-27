@@ -4,7 +4,7 @@ import InitialDefinitionSelector from './InitialDefinitionSelector'
 import DeviceDefinitionForm from './DeviceDefinitionForm'
 import ReactJson from 'react-json-view'
 import { toast } from 'react-toastify'
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import useApiResource from './useApiResource'
 import { useFormik } from 'formik'
 import useFormValuesEffects from './useFormValuesEffects'
@@ -51,7 +51,7 @@ const DeviceLibraryScreen = () => {
 
   return (
     <>
-      <DeviceDefinitionContext.Provider value={{ formik }}>
+      <Context.Provider value={{ formik }}>
         <Container fluid>
           <InitialDefinitionSelector
             value={initialValues?.id}
@@ -67,7 +67,7 @@ const DeviceLibraryScreen = () => {
             </Tab>
           </Tabs>
         </Container>
-      </DeviceDefinitionContext.Provider>
+      </Context.Provider>
     </>
   )
 }

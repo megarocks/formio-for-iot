@@ -15,6 +15,7 @@ export default () => {
   const commandsResourceOptions = useResourceOptions('commands')
   const enumsResourceOptions = useResourceOptions('enums')
   const supportedModelsResourceOptions = useResourceOptions('supported_models')
+  const capabilityTagsResourceOptions = useResourceOptions('capability-tags')
 
   return {
     enumOptions: enumsResourceOptions.options,
@@ -38,6 +39,9 @@ export default () => {
 
     supportedModels: supportedModelsResourceOptions.options,
     createNewSupportedModel: supportedModelsResourceOptions.createNew,
+
+    tags: capabilityTagsResourceOptions.options,
+    createNewTag: capabilityTagsResourceOptions.createNew,
   }
 }
 

@@ -5,8 +5,9 @@ import { ToastContainer } from 'react-toastify'
 import { Switch, Route, useHistory, useLocation, Redirect } from 'react-router-dom'
 import DeviceLibraryScreen from './DeviceLibraryScreen'
 import LocalizationScreen from './LocalizationScreen'
+import CapabilityScreen from './CapabilityScreen'
 
-export const DeviceDefinitionContext = React.createContext()
+export const Context = React.createContext()
 
 function App() {
   const history = useHistory()
@@ -22,6 +23,9 @@ function App() {
             <Nav.Link eventKey='/device-library'>Device Library</Nav.Link>
           </Nav.Item>
           <Nav.Item>
+            <Nav.Link eventKey='/capabilities'>Capabilities</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
             <Nav.Link eventKey='/localization'>Localization</Nav.Link>
           </Nav.Item>
         </Nav>
@@ -29,6 +33,9 @@ function App() {
       <Switch>
         <Route path='/device-library'>
           <DeviceLibraryScreen />
+        </Route>
+        <Route path='/capabilities'>
+          <CapabilityScreen />
         </Route>
         <Route path='/localization'>
           <LocalizationScreen />

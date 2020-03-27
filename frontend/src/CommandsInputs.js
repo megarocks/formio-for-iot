@@ -2,22 +2,22 @@ import React from 'react'
 import CreatableSelect from 'react-select/creatable'
 import { get } from 'lodash/fp'
 
-import { DeviceDefinitionContext } from './App'
+import { Context } from './App'
 import useSelectorOptions from './useSelectorOptions'
-import { createOption, createOnChangeHandler } from './utils'
+import { createOption, createOnChangeHandler, createFieldPath } from './utils'
 import ArgumentsPanel from './ArgumentsPanel'
 
 const CommandsInputs = ({ capabilityPath }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const { commandsOptions, createNewCommand } = useSelectorOptions()
 
-  const capability = get(capabilityPath, formik.values) || {}
+  const capability = capabilityPath ? get(capabilityPath, formik.values) || {} : formik.values
   const commandNames = Object.keys(capability.commands || {})
   const selectedCommandOptions = commandNames.map(createOption)
   const onCommandsSelectorChange = createOnChangeHandler({
-    fieldPath: `${capabilityPath}.commands`,
+    fieldPath: createFieldPath([capabilityPath, 'commands']),
     values: formik.values,
     setFieldValue: formik.setFieldValue,
   })
@@ -40,7 +40,7 @@ const CommandsInputs = ({ capabilityPath }) => {
           key={commandName + 'args-panel'}
           listsNames={listsNames}
           commandName={commandName}
-          argumentsPath={`${capabilityPath}.commands.${commandName}.arguments`}
+          argumentsPath={createFieldPath([capabilityPath, 'commands', commandName, 'arguments'])}
         />
       ))}
     </div>

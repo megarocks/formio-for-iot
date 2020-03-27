@@ -4,16 +4,16 @@ import { get } from 'lodash/fp'
 import SelectField from './components/SelectField'
 import useSelectorOptions from './useSelectorOptions'
 import CreatableSelect from 'react-select/creatable'
-import { createOnChangeHandler, createOption } from './utils'
-import { DeviceDefinitionContext } from './App'
+import { createFieldPath, createOnChangeHandler, createOption } from './utils'
+import { Context } from './App'
 
 const ListsInputs = ({ capabilityPath }) => {
-  const context = React.useContext(DeviceDefinitionContext)
+  const context = React.useContext(Context)
   const formik = context.formik
 
   const { lists, createNewList, listItems, createNewListItem } = useSelectorOptions()
 
-  const listsPath = `${capabilityPath}.lists`
+  const listsPath = createFieldPath([capabilityPath, 'lists'])
 
   const listsValue = get(listsPath, formik.values) || {}
   const listsSelectorValue = Object.keys(listsValue).map(createOption)
@@ -41,7 +41,7 @@ const ListsInputs = ({ capabilityPath }) => {
             key={`${listsPath}.${listName}`}
             label={`${listName} list:`}
             options={listItems}
-            fieldName={`${listsPath}.${listName}`}
+            fieldName={createFieldPath([listsPath, listName])}
             onCreateOption={createNewListItem}
           />
         )

@@ -21,3 +21,8 @@ export function createOnChangeHandler({
     setFieldValue(fieldPath, newFieldValue)
   }
 }
+
+export function createFieldPath(parts = []) {
+  const filtered = parts.filter((p) => !!p)
+  return filtered.join('.')
+}

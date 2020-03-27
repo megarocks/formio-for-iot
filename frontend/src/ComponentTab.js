@@ -1,21 +1,69 @@
-import React from 'react'
-import SelectField from './components/SelectField'
-import useSelectorOptions from './useSelectorOptions'
+import React, { useContext, useEffect } from 'react'
+import Select from 'react-select'
 import { Tab, Row, Col, Nav } from 'react-bootstrap'
-import ComponentCapability from './ComponentCapability'
+import CapabilitySubForm from './CapabilitySubForm'
+import { createOption } from './utils'
+import { Context } from './App'
+import useApiResource from './useApiResource'
+import { get, set, unset } from 'lodash/fp'
 
 const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
-  const { capabilities, createNewCapability } = useSelectorOptions()
+  const context = useContext(Context)
+  const formik = context.formik
+
+  const { data: capabilities = [], fetch } = useApiResource('capabilities')
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   return (
     <div>
-      <SelectField
-        key={`supportedCapabilities.${componentName}`}
-        fieldName={`supportedCapabilities.${componentName}`}
-        options={capabilities}
-        label='Capabilities'
-        onCreateOption={createNewCapability}
-      />
+      <div>
+        <label>Capabilities:</label>
+        <Select
+          isMulti
+          options={capabilities.map((c) => ({ ...createOption(c.id), ...c }))}
+          placeholder='Capabilities'
+          value={componentCapabilities.map(createOption)}
+          onChange={(currentSelection, { action, option, removedValue }) => {
+            //identify what changed
+            //when something deleted - remove from supported capabilities and from component
+            let newValues = { ...formik.values }
+            if (action === 'remove-value') {
+              const componentArray = get(['supportedCapabilities', componentName], newValues) || []
+              const withoutRemovedCapability = componentArray.filter(
+                (cap) => cap !== removedValue.value
+              )
+              newValues = set(
+                ['supportedCapabilities', componentName],
+                withoutRemovedCapability,
+                newValues
+              )
+              newValues = unset([componentName, removedValue.value], newValues)
+            }
+            //when something added - add item to supported capabilities and whole object to component
+            if (action === 'select-option') {
+              const componentArray = get(['supportedCapabilities', componentName], newValues) || []
+              componentArray.push(option.value)
+              newValues = set(['supportedCapabilities', componentName], componentArray, newValues)
+              // find data for selected capability and inject into form value
+              const selectedCapabilityData = capabilities.find((c) => c.id === option.value)
+              newValues = set([componentName, option.value], selectedCapabilityData, newValues)
+            }
+            formik.setValues(newValues)
+          }}
+          filterOption={({ label, value, data: { tags = [] } = {} }, filterString) => {
+            if (
+              label.startsWith(filterString) ||
+              value.startsWith(filterString) ||
+              tags.some((tag) => tag.startsWith(filterString))
+            )
+              return true
+            else return false
+          }}
+        />
+      </div>
 
       <Tab.Container
         id='component-capabilities'
@@ -36,7 +84,7 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
             <Tab.Content>
               {componentCapabilities.map((capability) => (
                 <Tab.Pane eventKey={capability} key={componentName + capability + 'tab-pane'}>
-                  <ComponentCapability componentName={componentName} capabilityName={capability} />
+                  <CapabilitySubForm componentName={componentName} capabilityName={capability} />
                 </Tab.Pane>
               ))}
             </Tab.Content>
