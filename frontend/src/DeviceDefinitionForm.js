@@ -11,7 +11,14 @@ const DeviceDefinitionForm = ({ isForLocalization = true }) => {
   const context = React.useContext(DeviceDefinitionContext)
   const formik = context.formik
 
-  const { types, createNewType, components, createNewComponent } = useSelectorOptions()
+  const {
+    types,
+    createNewType,
+    components,
+    createNewComponent,
+    supportedModels,
+    createNewSupportedModel,
+  } = useSelectorOptions()
 
   const componentNames = get('components', formik.values) || []
 
@@ -44,6 +51,14 @@ const DeviceDefinitionForm = ({ isForLocalization = true }) => {
             options={components}
             label='Components'
             onCreateOption={createNewComponent}
+          />
+        </div>
+        <div className='col-sm-6'>
+          <SelectField
+            fieldName='supportedModels'
+            options={supportedModels}
+            label='Supported models'
+            onCreateOption={createNewSupportedModel}
           />
         </div>
       </div>

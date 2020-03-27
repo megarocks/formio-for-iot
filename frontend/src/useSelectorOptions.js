@@ -14,6 +14,7 @@ export default () => {
   const listItemsResourceOptions = useResourceOptions('listItems')
   const commandsResourceOptions = useResourceOptions('commands')
   const enumsResourceOptions = useResourceOptions('enums')
+  const supportedModelsResourceOptions = useResourceOptions('supported_models')
 
   return {
     enumOptions: enumsResourceOptions.options,
@@ -34,6 +35,9 @@ export default () => {
     createNewCapability: capabilitiesResourceOptions.createNew,
     components: componentsResourceOptions.options,
     createNewComponent: componentsResourceOptions.createNew,
+
+    supportedModels: supportedModelsResourceOptions.options,
+    createNewSupportedModel: supportedModelsResourceOptions.createNew,
   }
 }
 
