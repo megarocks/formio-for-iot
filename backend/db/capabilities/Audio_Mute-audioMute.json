@@ -1,0 +1,36 @@
+{
+  "id": "audioMute",
+  "version": 1,
+  "name": "Audio Mute",
+  "status": "live",
+  "author": "autobot",
+  "attributes": {
+    "mute": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "MuteState",
+            "type": "string",
+            "enum": ["muted", "unmuted"],
+            "default": "unmuted"
+          }
+        },
+        "required": ["value"]
+      }
+    }
+  },
+  "commands": {
+    "setMute": {
+      "arguments": [
+        {
+          "name": "state",
+          "schema": { "type": "string", "title": "MuteState", "enum": ["muted", "unmuted"] },
+          "required": true
+        }
+      ]
+    },
+    "mute": {},
+    "unmute": {}
+  }
+}
