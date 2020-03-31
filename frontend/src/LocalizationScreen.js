@@ -10,18 +10,19 @@ import ReactJson from 'react-json-view'
 import { max } from 'lodash/fp'
 
 const LocalizationScreen = () => {
-  const { data: templates = [], fetch: fetchTemplates } = useApiResource('device_library')
+  const { data: deviceLibrary = [], fetch: fetchTemplates } = useApiResource('device_library')
   const {
-    data: localized = [],
+    data: localizedDevices = [],
     fetch: fetchLocalized,
     create: createLocalized,
     update: updateLocalized,
-  } = useApiResource('localized_devices')
+  } = useApiResource('username_devices')
 
-  const templateSelectorOptions = useMemo(() => [...templates, ...localized], [
-    JSON.stringify(templates),
-    JSON.stringify(localized),
-  ])
+  const templateSelectorOptions = useMemo(
+    () => [...deviceLibrary, ...localizedDevices],
+    // eslint-disable-next-line
+    [JSON.stringify(deviceLibrary), JSON.stringify(localizedDevices)]
+  )
 
   const [initialValues, setInitialValues] = useState()
 
@@ -37,7 +38,7 @@ const LocalizationScreen = () => {
     enableReinitialize: true,
   })
 
-  const isUpdate = localized.find((d) => d.id === formik.values?.id)
+  const isUpdate = localizedDevices.find((d) => d.id === formik.values?.id)
 
   async function onSubmit(values) {
     try {
@@ -62,7 +63,7 @@ const LocalizationScreen = () => {
       const isLastPartNumber = Number.isInteger(Number(lastPart))
       if (!isLastPartNumber) {
         function getCounterForCurrentId() {
-          const numbers = localized
+          const numbers = localizedDevices
             .filter((t) => t.id.startsWith(initialValues.id))
             .map((t) => {
               const currentId = t.id
@@ -83,17 +84,18 @@ const LocalizationScreen = () => {
         })
       }
     }
+    // eslint-disable-next-line
   }, [JSON.stringify(initialValues)])
 
   return (
     <>
-      <Context.Provider value={{ formik }}>
+      <Context.Provider value={{ formik, showDisplayMaps: true, showLocationField: true }}>
         <Container fluid>
           <InitialDefinitionSelector
             value={initialValues?.id}
             setInitialValues={setInitialValues}
             definitions={templateSelectorOptions}
-            label='Load template or previously localized device'
+            label='Select device definition'
           />
 
           {initialValues ? (
@@ -106,7 +108,7 @@ const LocalizationScreen = () => {
               </Tab>
             </Tabs>
           ) : (
-            <Alert variant='info'>Select template to see form</Alert>
+            <Alert variant='info'>Select device definition to display form</Alert>
           )}
         </Container>
       </Context.Provider>

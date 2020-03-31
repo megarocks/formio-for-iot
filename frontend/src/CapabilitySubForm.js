@@ -9,14 +9,18 @@ import DisplayMaps from './DisplayMaps'
 import { createFieldPath } from './utils'
 import SelectField from './components/SelectField'
 import useSelectorOptions from './useSelectorOptions'
+import { Context } from './App'
 
-const CapabilitySubForm = ({ componentName, capabilityName, tagsInputs }) => {
+const CapabilitySubForm = ({ componentName, capabilityName }) => {
+  const context = React.useContext(Context)
+  const { showDisplayMaps, showTagsInputs } = context
+
   const capabilityPath = createFieldPath([componentName, capabilityName])
 
   const { tags, createNewTag } = useSelectorOptions()
 
   return (
-    <div className='px-2 border' key={capabilityPath}>
+    <div className='p-2 border' key={capabilityPath}>
       <Tabs defaultActiveKey='main' id='component-capability-features' unmountOnExit>
         <Tab title='Main' eventKey='main'>
           <div className='row'>
@@ -39,7 +43,10 @@ const CapabilitySubForm = ({ componentName, capabilityName, tagsInputs }) => {
                 label={`Status:`}
               />
             </div>
-            {tagsInputs && (
+            <div className='col-sm-6'>
+              <SimpleField fieldName={createFieldPath([capabilityPath, 'author'])} label='Author' />
+            </div>
+            {showTagsInputs && (
               <div className='col-sm-6'>
                 <SelectField
                   fieldName={createFieldPath([capabilityPath, 'tags'])}
@@ -62,9 +69,11 @@ const CapabilitySubForm = ({ componentName, capabilityName, tagsInputs }) => {
         <Tab title='Attributes' eventKey='attributes'>
           <AttributesInputs capabilityPath={capabilityPath} />
         </Tab>
-        <Tab title='Display Maps' eventKey='display-maps'>
-          <DisplayMaps capabilityPath={capabilityPath} />
-        </Tab>
+        {showDisplayMaps && (
+          <Tab title='Display Maps' eventKey='display-maps'>
+            <DisplayMaps capabilityPath={capabilityPath} />
+          </Tab>
+        )}
       </Tabs>
     </div>
   )

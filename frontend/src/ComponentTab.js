@@ -1,20 +1,23 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Select from 'react-select'
 import { Tab, Row, Col, Nav } from 'react-bootstrap'
 import CapabilitySubForm from './CapabilitySubForm'
 import { createOption } from './utils'
 import { Context } from './App'
 import useApiResource from './useApiResource'
-import { get, set, unset } from 'lodash/fp'
+import { get, set, unset, intersection } from 'lodash/fp'
+import useSelectorOptions from './useSelectorOptions'
 
 const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
   const context = useContext(Context)
   const formik = context.formik
 
   const { data: capabilities = [], fetch } = useApiResource('capabilities')
+  const { tags } = useSelectorOptions()
 
   useEffect(() => {
     fetch()
+    // eslint-disable-next-line
   }, [])
 
   function onCapabilitySelectorChange(currentSelection, { action, option, removedValue }) {
@@ -39,28 +42,46 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
     formik.setValues(newValues)
   }
 
-  function onCapabilitySelectorFiltering({ label, value, data: { tags = [] } = {} }, filterString) {
-    if (
-      label.startsWith(filterString) ||
-      value.startsWith(filterString) ||
-      tags.some((tag) => tag.startsWith(filterString))
-    )
-      return true
-    else return false
+  const [capabilityTagFilter, setCapabilityTagFilter] = useState([])
+  const onTagFilterChange = (selected) => {
+    setCapabilityTagFilter(selected || [])
   }
+
+  const capabilityOptions = capabilities
+    .filter((capability) => {
+      if (!capabilityTagFilter.length) return true
+
+      const { tags = [] } = capability
+      const filteringTags = capabilityTagFilter.map(({ value }) => value)
+      const isPassingFilter = intersection(tags, filteringTags).length > 0
+      return isPassingFilter
+    })
+    .map((c) => createOption(c.id))
 
   return (
     <div>
-      <div>
-        <label>Capabilities:</label>
-        <Select
-          isMulti
-          options={capabilities.map((c) => ({ ...createOption(c.id), ...c }))}
-          placeholder='Capabilities'
-          value={componentCapabilities.map(createOption)}
-          onChange={onCapabilitySelectorChange}
-          filterOption={onCapabilitySelectorFiltering}
-        />
+      <div className='mt-3'>
+        <Row>
+          <Col md={3}>
+            <label>Filter capabilities by tag:</label>
+            <Select
+              isMulti
+              options={tags}
+              placeholder='Select tags to filter capabilities library'
+              onChange={onTagFilterChange}
+            />
+          </Col>
+          <Col md={9}>
+            <label>Capabilities:</label>
+            <Select
+              isMulti
+              options={capabilityOptions}
+              placeholder='Capabilities'
+              value={componentCapabilities.map(createOption)}
+              onChange={onCapabilitySelectorChange}
+            />
+          </Col>
+        </Row>
       </div>
 
       <Tab.Container
@@ -68,7 +89,7 @@ const ComponentTab = ({ componentName, componentCapabilities = [] }) => {
         defaultActiveKey={componentCapabilities[0] || ''}
         unmountOnExit
       >
-        <Row>
+        <Row className='mt-3'>
           <Col sm={3}>
             <Nav variant='pills' className='flex-column'>
               {componentCapabilities.map((capability) => (

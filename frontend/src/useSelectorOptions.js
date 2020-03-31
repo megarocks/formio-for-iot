@@ -18,7 +18,7 @@ export default () => {
   const commandsResourceOptions = useResourceOptions('commands')
   const enumsResourceOptions = useResourceOptions('enums')
   const supportedModelsResourceOptions = useResourceOptions('supported_models')
-  const capabilityTagsResourceOptions = useResourceOptions('capability-tags')
+  const capabilityTagsResourceOptions = useResourceOptions('tags')
 
   return {
     enumOptions: enumsResourceOptions.options,

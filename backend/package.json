@@ -8,9 +8,10 @@
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "lokijs": "^1.5.8",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "sanitize-filename": "^1.6.3"
   },
   "scripts": {
-    "start": "nodemon --ignore 'db/**' index.js"
+    "start": "nodemon --ignore 'db/**/*.json' index.js"
   }
 }

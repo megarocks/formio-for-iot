@@ -50,25 +50,26 @@ const DeviceLibraryScreen = () => {
   // conditional rendering: https://reactjs.org/docs/conditional-rendering.html
   return (
     <>
-      <Context.Provider value={{ formik }}>
+      <Context.Provider value={{ formik, showDisplayMaps: false, showLocationField: false }}>
         <Container fluid>
           <InitialDefinitionSelector
             value={initialValues?.id}
             setInitialValues={setInitialValues}
             definitions={definitions}
+            label='Select device definition'
           />
 
           {initialValues ? (
             <Tabs defaultActiveKey='form' id='form-json-tabs' unmountOnExit>
               <Tab title='Form' eventKey='form'>
-                <DeviceDefinitionForm isForLocalization={false} />
+                <DeviceDefinitionForm />
               </Tab>
               <Tab title='JSON' eventKey='json'>
                 <ReactJson src={formik.values} collapsed />
               </Tab>
             </Tabs>
           ) : (
-            <Alert variant='info'>Select template to display form</Alert>
+            <Alert variant='info'>Select device definition to display form</Alert>
           )}
         </Container>
       </Context.Provider>

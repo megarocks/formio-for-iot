@@ -3,7 +3,7 @@ const cors = require('cors')
 
 const resources = [
   'device_library',
-  'localized_devices',
+  'username_devices',
   'components',
   'types',
   'capabilities',
@@ -14,7 +14,7 @@ const resources = [
   'commands',
   'enums',
   'supported_models',
-  'capability-tags'
+  'tags'
 ]
 
 const createRouter = require('./createResourceRouter')

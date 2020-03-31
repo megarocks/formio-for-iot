@@ -27,5 +27,6 @@ export default ({ values, setValues, initialValues }) => {
         })
       }
     }
+    // eslint-disable-next-line
   }, [stringInitial])
 }

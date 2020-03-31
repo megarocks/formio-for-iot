@@ -1,7 +1,0 @@
-{
-  "id": "blank",
-  "name": "blank",
-  "friendlyName": "blank",
-  "components": ["main", "zone 2"],
-  "type": ["Media Player", "Receiver"]
-}

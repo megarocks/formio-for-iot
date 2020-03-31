@@ -11,12 +11,10 @@ import useSelectorOptions from './useSelectorOptions'
 // also it uses custom hook to get access to various selector options and
 // functions to call when new created
 
-// js destructuring is used to get props values, also to assign default value
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-const DeviceDefinitionForm = ({ isForLocalization = true }) => {
+const DeviceDefinitionForm = () => {
   // consume context
   const context = React.useContext(Context)
-  const formik = context.formik
+  const { formik, showLocationField } = context
 
   const {
     types,
@@ -41,7 +39,7 @@ const DeviceDefinitionForm = ({ isForLocalization = true }) => {
         <div className='col-sm-6'>
           <SimpleField fieldName='friendlyName' label='Friendly Name' />
         </div>
-        {isForLocalization && (
+        {showLocationField && (
           <div className='col-sm-6'>
             <SimpleField fieldName='location' label='Location' />
           </div>
@@ -72,21 +70,19 @@ const DeviceDefinitionForm = ({ isForLocalization = true }) => {
         </div>
       </div>
 
-      {isForLocalization && (
-        <Tabs defaultActiveKey={componentNames[0]} id='components-tabs' unmountOnExit>
-          {componentNames.map((componentName) => (
-            <Tab title={componentName} key={componentName} eventKey={componentName}>
-              <ComponentTab
-                componentName={componentName}
-                componentCapabilities={get(
-                  ['values', 'supportedCapabilities', componentName],
-                  formik
-                )}
-              />
-            </Tab>
-          ))}
-        </Tabs>
-      )}
+      <Tabs defaultActiveKey={componentNames[0]} id='components-tabs' unmountOnExit>
+        {componentNames.map((componentName) => (
+          <Tab title={componentName} key={componentName} eventKey={componentName}>
+            <ComponentTab
+              componentName={componentName}
+              componentCapabilities={get(
+                ['values', 'supportedCapabilities', componentName],
+                formik
+              )}
+            />
+          </Tab>
+        ))}
+      </Tabs>
 
       <div className='d-flex justify-content-end m-3'>
         <input type='submit' className='btn btn-success btn-lg' />
