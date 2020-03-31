@@ -1,5 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
+const sanitizeFileName = require("sanitize-filename")
 
 module.exports = async (directory) => {
   const dirPath = path.join(__dirname, directory)
@@ -31,7 +32,17 @@ module.exports = async (directory) => {
     },
     save: async (itemData) => {
       try {
-        const itemPath = path.join(dirPath, `${itemData.id}.json`)
+        // if name in file data
+        // if there is a file with {id}.json
+        // delete it and write information to name-id.json
+        if (itemData.name) {
+          const mayBeOldFilePath = path.join(dirPath, createItemFileName({ id: itemData.id }))
+          try {
+            await fs.unlink(mayBeOldFilePath)
+          } catch (e) {}
+        }
+
+        const itemPath = path.join(dirPath, createItemFileName(itemData))
         const itemStringContent = JSON.stringify(itemData)
         await fs.writeFile(itemPath, itemStringContent)
         return true
@@ -42,7 +53,7 @@ module.exports = async (directory) => {
     },
     delete: async (id) => {
       try {
-        const itemPath = path.join(dirPath, `${id}.json`)
+        const itemPath = path.join(dirPath, createItemFileName({ id }))
         await fs.unlink(itemPath)
         return true
       } catch (e) {
@@ -51,4 +62,12 @@ module.exports = async (directory) => {
       }
     },
   }
+}
+
+function createItemFileName(itemData = {}) {
+  let { name, id } = itemData
+  name = name ? `${name}-${id}.json` : `${id}.json`
+  name = name.replace(' ', '_')
+  name = sanitizeFileName(name)
+  return name
 }

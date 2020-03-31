@@ -31,6 +31,7 @@ const SelectField = ({
     } else {
       return options.find((rE) => getOptionValue(rE) === fieldValue)
     }
+    // eslint-disable-next-line
   }, [JSON.stringify(fieldValue), options])
 
   // useCallback is used for optimization

@@ -61,15 +61,15 @@ const CapabilityScreen = () => {
   }
 
   return (
-    <Context.Provider value={{ formik }}>
+    <Context.Provider value={{ formik, showTagsInputs: true }}>
       <Container fluid>
         <div className='row mt-3'>
           <div className='col-sm'>
             <div className='form-group'>
-              <label>Capability Template:</label>
+              <label>Select capability</label>
               <CreatableSelect
                 options={capabilityOptions}
-                placeholder='Select or create capability template'
+                placeholder='Select capability'
                 value={currentOption}
                 onChange={onChangeCapabilityTemplate}
                 onCreateOption={onCreateOption}
@@ -81,7 +81,7 @@ const CapabilityScreen = () => {
           <div className='row'>
             <div className='col-sm'>
               <form onSubmit={formik.handleSubmit}>
-                <CapabilitySubForm tagsInputs />
+                <CapabilitySubForm />
                 <div className='d-flex justify-content-end mt-3'>
                   <input type='submit' className='btn btn-lg btn-success' />
                 </div>
@@ -89,7 +89,7 @@ const CapabilityScreen = () => {
             </div>
           </div>
         ) : (
-          <Alert variant='info'>Select capability to see form</Alert>
+          <Alert variant='info'>Select capability to display form</Alert>
         )}
       </Container>
     </Context.Provider>
