@@ -9,7 +9,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "formik": "^2.1.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "lokijs": "^1.5.8",
     "prettier": "^2.0.1",
     "react": "^16.13.1",
